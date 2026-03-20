@@ -50,8 +50,8 @@
       text-align: center;
       padding: 1.5rem 1rem;
     }
-    header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
-    header .subtitle { font-size: 0.95rem; opacity: 0.85; }
+    .header-icon { font-size: 2rem; margin-bottom: 0.35rem; }
+    header h1 { font-size: 1.5rem; font-weight: 700; }
     .accent-bar {
       height: 4px;
       background: linear-gradient(90deg, var(--orange) 0%, #f5a623 100%);
@@ -236,10 +236,32 @@
     footer img:hover { opacity: 1; }
 
     /* Admin */
-    #admin-view { display: none; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-    #admin-view h2 { color: var(--blau); margin-bottom: 1rem; }
-    .admin-table-wrap { overflow-x: auto; }
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    #admin-view { display: none; max-width: 960px; margin: 1.5rem auto; padding: 0 0.75rem; }
+    #admin-view h2 { color: var(--blau); margin-bottom: 1rem; font-size: 1.2rem; }
+    #admin-summary {
+      display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
+      margin-bottom: 0.75rem; font-size: 0.9rem; font-weight: 700; color: var(--blau);
+    }
+    #admin-summary span {
+      background: var(--blau-light); padding: 0.3rem 0.7rem;
+      border-radius: var(--radius-sm); white-space: nowrap;
+    }
+    #admin-group-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .group-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      background: var(--blau-light); color: var(--blau);
+      padding: 0.2rem 0.55rem; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 600;
+    }
+    .group-badge .count {
+      background: var(--blau); color: var(--white); border-radius: 50%;
+      width: 18px; height: 18px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.68rem;
+    }
+    /* Tabelle: scroll auf Desktop, Card-Stack auf Mobile */
+    .admin-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 560px; }
     .admin-table th {
       background: var(--blau); color: var(--white);
       padding: 0.6rem 0.5rem; text-align: left;
@@ -254,33 +276,42 @@
       padding: 0.3rem 0.6rem; border-radius: var(--radius-sm);
       cursor: pointer; font-size: 0.78rem;
     }
-    #admin-summary { display: flex; gap: 2rem; margin-bottom: 0.75rem; font-size: 1rem; font-weight: 700; color: var(--blau); }
-    #admin-group-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-    .group-badge {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      background: var(--blau-light); color: var(--blau);
-      padding: 0.25rem 0.65rem; border-radius: 20px;
-      font-size: 0.82rem; font-weight: 600;
-    }
-    .group-badge .count {
-      background: var(--blau); color: var(--white); border-radius: 50%;
-      width: 20px; height: 20px;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 0.72rem;
+    /* Mobile: Card-Layout statt Tabelle */
+    @media (max-width: 600px) {
+      .admin-table-wrap { overflow-x: visible; }
+      .admin-table, .admin-table thead, .admin-table tbody,
+      .admin-table th, .admin-table td, .admin-table tr { display: block; }
+      .admin-table thead { display: none; }
+      .admin-table tr {
+        background: var(--white); border: 1px solid var(--border);
+        border-radius: var(--radius); margin-bottom: 0.6rem;
+        padding: 0.6rem 0.75rem; min-width: 0;
+      }
+      .admin-table tr:nth-child(even) { background: var(--white); }
+      .admin-table td {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 0.25rem 0; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem;
+      }
+      .admin-table td:last-child { border-bottom: none; padding-top: 0.5rem; }
+      .admin-table td::before {
+        content: attr(data-label);
+        font-weight: 700; color: var(--blau); font-size: 0.75rem;
+        flex-shrink: 0; margin-right: 0.5rem; min-width: 80px;
+      }
     }
   </style>
 </head>
 <body>
 
   <header>
+    <div class="header-icon">&#x1F4CB;</div>
     <h1>Prüfungsorganisation</h1>
-    <p class="subtitle">Skiausfahrt Valmorel 2026</p>
   </header>
   <div class="accent-bar"></div>
 
   <main>
     <div class="intro-box">
-      <p class="intro-text">Bitte füllt dieses Formular vollständig aus, damit wir die Prüfungen der Skiausfahrt reibungslos organisieren können. Gebt zunächst euren Namen und eure Gruppe an, wählt eure Hochschule und bestätigt eure Prüfungsteilnahme. Abschließend gebt ihr an, welchen Abschluss ihr anstrebt. [Platzhalter – genauer Text folgt.]</p>
+      <p class="intro-text">Bestätigt zunächst eure Prüfungsteilnahme — danach öffnen sich die weiteren Felder. Gebt euren Namen, eure Gruppe und eure Hochschule an und wählt abschließend den Abschluss, den ihr anstrebt. [Platzhalter – genauer Text folgt.]</p>
     </div>
 
     <form id="umfrage-form" novalidate>
@@ -436,7 +467,7 @@
   </main>
 
   <div id="admin-view">
-    <h2>Admin &mdash; Prüfungsorganisation Valmorel</h2>
+    <h2>&#x1F4CB; Admin &mdash; Prüfungsorganisation</h2>
     <p id="admin-loading">Daten werden geladen&hellip;</p>
     <p id="admin-error" hidden></p>
     <div id="admin-summary" hidden></div>
@@ -715,14 +746,14 @@
       var tbody = document.getElementById('admin-tbody');
       tbody.innerHTML = sorted.map(function(r) {
         return '<tr>' +
-          '<td>' + escHtml(r.nachname || '') + '</td>' +
-          '<td>' + escHtml(r.vorname || '') + '</td>' +
-          '<td>' + escHtml(r.gruppe || '') + '</td>' +
-          '<td>' + escHtml(r.uni || '') + '</td>' +
-          '<td>' + escHtml(r.pruefung || '') + '</td>' +
-          '<td>' + escHtml(ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || '') + '</td>' +
-          '<td>' + (r.timestamp ? new Date(r.timestamp).toLocaleString('de-DE') : '') + '</td>' +
-          '<td><button class="btn-del" data-ts="' + escHtml(r.timestamp || '') + '">L\u00f6schen</button></td>' +
+          '<td data-label="Nachname">' + escHtml(r.nachname || '') + '</td>' +
+          '<td data-label="Vorname">' + escHtml(r.vorname || '') + '</td>' +
+          '<td data-label="Gruppe">' + escHtml(r.gruppe || '') + '</td>' +
+          '<td data-label="Uni">' + escHtml(r.uni || '') + '</td>' +
+          '<td data-label="Pr\u00fcfung">' + escHtml(r.pruefung || '') + '</td>' +
+          '<td data-label="Abschluss">' + escHtml(ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || '') + '</td>' +
+          '<td data-label="Zeit">' + (r.timestamp ? new Date(r.timestamp).toLocaleString('de-DE') : '') + '</td>' +
+          '<td data-label=""><button class="btn-del" data-ts="' + escHtml(r.timestamp || '') + '">L\u00f6schen</button></td>' +
           '</tr>';
       }).join('');
 
