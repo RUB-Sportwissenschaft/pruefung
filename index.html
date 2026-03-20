@@ -175,6 +175,7 @@
     .option-card.selected .check-circle::after { content: '\2713'; color: var(--white); font-size: 0.75rem; font-weight: 700; }
 
     .section-hidden { display: none; }
+    .option-card input[type="checkbox"] { display: none; pointer-events: none; }
 
     /* Intro-Text */
     .intro-box {
@@ -406,37 +407,37 @@
         <fieldset>
           <legend>&#x1F393; Angestrebter Abschluss <span class="req">*</span></legend>
           <div class="option-list">
-            <div class="option-card" role="radio" aria-checked="false" tabindex="0" data-abschluss="studienleistung">
+            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="studienleistung">
               <span class="option-text">
                 <span class="option-name">Studienleistung</span>
                 <span class="option-desc">Beschreibung folgt</span>
               </span>
               <span class="check-circle"></span>
-              <input type="radio" name="abschluss" value="studienleistung" hidden>
+              <input type="checkbox" name="abschluss" value="studienleistung" hidden>
             </div>
-            <div class="option-card" role="radio" aria-checked="false" tabindex="0" data-abschluss="lizenz">
+            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="lizenz">
               <span class="option-text">
                 <span class="option-name">Lizenz</span>
                 <span class="option-desc">Beschreibung folgt</span>
               </span>
               <span class="check-circle"></span>
-              <input type="radio" name="abschluss" value="lizenz" hidden>
+              <input type="checkbox" name="abschluss" value="lizenz" hidden>
             </div>
-            <div class="option-card" role="radio" aria-checked="false" tabindex="0" data-abschluss="schulzertifikat">
+            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="schulzertifikat">
               <span class="option-text">
                 <span class="option-name">Schulzertifikat</span>
                 <span class="option-desc">Beschreibung folgt</span>
               </span>
               <span class="check-circle"></span>
-              <input type="radio" name="abschluss" value="schulzertifikat" hidden>
+              <input type="checkbox" name="abschluss" value="schulzertifikat" hidden>
             </div>
-            <div class="option-card" role="radio" aria-checked="false" tabindex="0" data-abschluss="zertifikat-schneesport">
+            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="zertifikat-schneesport">
               <span class="option-text">
                 <span class="option-name">Zertifikat Schneesport an Schulen</span>
                 <span class="option-desc">Beschreibung folgt</span>
               </span>
               <span class="check-circle"></span>
-              <input type="radio" name="abschluss" value="zertifikat-schneesport" hidden>
+              <input type="checkbox" name="abschluss" value="zertifikat-schneesport" hidden>
             </div>
           </div>
           <span class="error-msg" id="abschluss-error"></span>
@@ -574,7 +575,7 @@
             c.classList.remove('selected');
             c.setAttribute('aria-checked', 'false');
           });
-          document.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
+          document.querySelectorAll('input[type="radio"], input[type="checkbox"][name="abschluss"]').forEach(function(r) { r.checked = false; });
         }
         validateForm();
       });
@@ -582,16 +583,21 @@
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); confirmCard.click(); }
       });
 
-      // Abschluss-Kacheln
+      // Abschluss-Kacheln (Mehrfachauswahl)
       document.querySelectorAll('.option-card').forEach(function(card) {
-        card.addEventListener('click', function() {
-          document.querySelectorAll('.option-card').forEach(function(c) {
-            c.classList.remove('selected');
-            c.setAttribute('aria-checked', 'false');
-          });
-          card.classList.add('selected');
-          card.setAttribute('aria-checked', 'true');
-          card.querySelector('input[type="radio"]').checked = true;
+        card.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var cb = card.querySelector('input[type="checkbox"]');
+          var isSelected = card.classList.contains('selected');
+          if (isSelected) {
+            card.classList.remove('selected');
+            card.setAttribute('aria-checked', 'false');
+            cb.checked = false;
+          } else {
+            card.classList.add('selected');
+            card.setAttribute('aria-checked', 'true');
+            cb.checked = true;
+          }
           validateForm();
         });
         card.addEventListener('keydown', function(e) {
@@ -612,7 +618,7 @@
       var uniOk = document.querySelector('input[name="uni"]:checked');
       var pruefungOk = document.querySelector('input[name="pruefung"]').checked;
       var abschlussOk = document.querySelector('input[name="abschluss"]:checked');
-      var valid = vorname.length >= 2 && nachname.length >= 2 && gruppeOk && uniOk && pruefungOk && abschlussOk;
+      var valid = vorname.length >= 2 && nachname.length >= 2 && gruppeOk && uniOk && pruefungOk && !!abschlussOk;
       document.getElementById('submit-btn').disabled = !valid;
     }
 
@@ -624,12 +630,12 @@
         var gruppeEl = document.querySelector('input[name="gruppe"]:checked');
         var uniEl = document.querySelector('input[name="uni"]:checked');
         var pruefungEl = document.querySelector('input[name="pruefung"]');
-        var abschlussEl = document.querySelector('input[name="abschluss"]:checked');
+        var abschlussEls = document.querySelectorAll('input[name="abschluss"]:checked');
 
         var gruppe = gruppeEl ? gruppeEl.value : null;
         var uni = uniEl ? uniEl.value : null;
         var pruefung = pruefungEl.checked ? 'Freie Abfahrt' : null;
-        var abschluss = abschlussEl ? abschlussEl.value : null;
+        var abschluss = Array.from(abschlussEls).map(function(el) { return el.value; });
 
         var hasError = false;
         if (vorname.length < 2) { document.getElementById('vorname-error').textContent = 'Bitte Vorname eingeben (mindestens 2 Zeichen).'; hasError = true; }
@@ -642,7 +648,7 @@
         else { document.getElementById('uni-error').textContent = ''; }
         if (!pruefung) { document.getElementById('pruefung-error').textContent = 'Bitte Pr\u00fcfungsteilnahme best\u00e4tigen.'; hasError = true; }
         else { document.getElementById('pruefung-error').textContent = ''; }
-        if (!abschluss) { document.getElementById('abschluss-error').textContent = 'Bitte einen Abschluss ausw\u00e4hlen.'; hasError = true; }
+        if (!abschluss.length) { document.getElementById('abschluss-error').textContent = 'Bitte mindestens einen Abschluss ausw\u00e4hlen.'; hasError = true; }
         else { document.getElementById('abschluss-error').textContent = ''; }
         if (hasError) return;
 
@@ -695,7 +701,7 @@
         '<p><span class="conf-label">Gruppe:</span> ' + escHtml(data.gruppe) + '</p>' +
         '<p><span class="conf-label">Uni:</span> ' + escHtml(data.uni) + '</p>' +
         '<p><span class="conf-label">Pr\u00fcfung:</span> ' + escHtml(data.pruefung) + '</p>' +
-        '<p><span class="conf-label">Abschluss:</span> ' + escHtml(ABSCHLUSS_LABELS[data.abschluss] || data.abschluss) + '</p>';
+        '<p><span class="conf-label">Abschluss:</span> ' + escHtml((Array.isArray(data.abschluss) ? data.abschluss : [data.abschluss]).map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ')) + '</p>';
     }
 
     function initAdmin() {
@@ -751,7 +757,7 @@
           '<td data-label="Gruppe">' + escHtml(r.gruppe || '') + '</td>' +
           '<td data-label="Uni">' + escHtml(r.uni || '') + '</td>' +
           '<td data-label="Pr\u00fcfung">' + escHtml(r.pruefung || '') + '</td>' +
-          '<td data-label="Abschluss">' + escHtml(ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || '') + '</td>' +
+          '<td data-label="Abschluss">' + escHtml((Array.isArray(r.abschluss) ? r.abschluss : (r.abschluss ? [r.abschluss] : [])).map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ')) + '</td>' +
           '<td data-label="Zeit">' + (r.timestamp ? new Date(r.timestamp).toLocaleString('de-DE') : '') + '</td>' +
           '<td data-label=""><button class="btn-del" data-ts="' + escHtml(r.timestamp || '') + '">L\u00f6schen</button></td>' +
           '</tr>';
@@ -777,8 +783,11 @@
       summary.hidden = false;
       var abschlussCount = {};
       records.forEach(function(r) {
-        var label = ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || 'Unbekannt';
-        abschlussCount[label] = (abschlussCount[label] || 0) + 1;
+        var arr = Array.isArray(r.abschluss) ? r.abschluss : (r.abschluss ? [r.abschluss] : ['Unbekannt']);
+        arr.forEach(function(a) {
+          var label = ABSCHLUSS_LABELS[a] || a || 'Unbekannt';
+          abschlussCount[label] = (abschlussCount[label] || 0) + 1;
+        });
       });
       var summaryHtml = '<span>Gesamt: ' + records.length + '</span>';
       Object.keys(abschlussCount).forEach(function(label) {
@@ -847,7 +856,9 @@
         startY: 34,
         head: [['Nachname', 'Vorname', 'Gruppe', 'Uni', 'Pruefung', 'Abschluss']],
         body: records.map(function(r) {
-          return [r.nachname || '', r.vorname || '', r.gruppe || '', r.uni || '', r.pruefung || '', ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || ''];
+          var abschlussArr = Array.isArray(r.abschluss) ? r.abschluss : (r.abschluss ? [r.abschluss] : []);
+          var abschlussDisplay = abschlussArr.map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ');
+          return [r.nachname || '', r.vorname || '', r.gruppe || '', r.uni || '', r.pruefung || '', abschlussDisplay];
         }),
         styles: { fontSize: 8, cellPadding: 2 },
         headStyles: { fillColor: [0, 53, 96] }
@@ -855,8 +866,11 @@
 
       var abschlussCount = {};
       records.forEach(function(r) {
-        var label = ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || 'Unbekannt';
-        abschlussCount[label] = (abschlussCount[label] || 0) + 1;
+        var arr = Array.isArray(r.abschluss) ? r.abschluss : (r.abschluss ? [r.abschluss] : ['Unbekannt']);
+        arr.forEach(function(a) {
+          var label = ABSCHLUSS_LABELS[a] || a || 'Unbekannt';
+          abschlussCount[label] = (abschlussCount[label] || 0) + 1;
+        });
       });
       var summaryBody = Object.keys(abschlussCount).map(function(label) { return [label, String(abschlussCount[label])]; });
       summaryBody.push(['Gesamt', String(records.length)]);
