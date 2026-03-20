@@ -285,6 +285,22 @@
 
     <form id="umfrage-form" novalidate>
 
+      <!-- Prüfungsteilnahme — zuerst -->
+      <div class="form-section">
+        <fieldset>
+          <legend>&#x2705; Prüfungsteilnahme <span class="req">*</span></legend>
+          <div class="confirm-card" role="checkbox" aria-checked="false" tabindex="0" id="pruefung-confirm">
+            <span class="check-box"></span>
+            <span class="confirm-text">Ich nehme an der freien Abfahrt teil</span>
+            <input type="checkbox" name="pruefung" value="freie-abfahrt" hidden>
+          </div>
+          <span class="error-msg" id="pruefung-error"></span>
+        </fieldset>
+      </div>
+
+      <!-- Rest des Formulars: nur sichtbar nach Bestätigung -->
+      <div id="details-section" class="section-hidden">
+
       <!-- Name -->
       <div class="form-section">
         <div class="field-group">
@@ -354,21 +370,8 @@
         </fieldset>
       </div>
 
-      <!-- Prüfungsteil -->
-      <div class="form-section">
-        <fieldset>
-          <legend>&#x2705; Prüfungsteilnahme <span class="req">*</span></legend>
-          <div class="confirm-card" role="checkbox" aria-checked="false" tabindex="0" id="pruefung-confirm">
-            <span class="check-box"></span>
-            <span class="confirm-text">Ich nehme an der freien Abfahrt teil</span>
-            <input type="checkbox" name="pruefung" value="freie-abfahrt" hidden>
-          </div>
-          <span class="error-msg" id="pruefung-error"></span>
-        </fieldset>
-      </div>
-
-      <!-- Abschluss (bedingt sichtbar) -->
-      <div class="form-section section-hidden" id="abschluss-section">
+      <!-- Abschluss -->
+      <div class="form-section" id="abschluss-section">
         <fieldset>
           <legend>&#x1F393; Angestrebter Abschluss <span class="req">*</span></legend>
           <div class="option-list">
@@ -413,6 +416,8 @@
         <span class="error-msg" id="network-error"></span>
         <button type="submit" id="submit-btn" disabled>Absenden</button>
       </div>
+
+      </div><!-- /details-section -->
 
     </form>
 
@@ -526,16 +531,19 @@
         confirmCard.classList.toggle('selected', !isChecked);
         confirmCard.setAttribute('aria-checked', String(!isChecked));
 
-        var abschlussSection = document.getElementById('abschluss-section');
+        var detailsSection = document.getElementById('details-section');
         if (!isChecked) {
-          abschlussSection.classList.remove('section-hidden');
+          detailsSection.classList.remove('section-hidden');
         } else {
-          abschlussSection.classList.add('section-hidden');
-          document.querySelectorAll('.option-card').forEach(function(c) {
+          detailsSection.classList.add('section-hidden');
+          // Alle Felder zurücksetzen
+          document.getElementById('vorname').value = '';
+          document.getElementById('nachname').value = '';
+          document.querySelectorAll('.card, .uni-card, .option-card').forEach(function(c) {
             c.classList.remove('selected');
             c.setAttribute('aria-checked', 'false');
           });
-          document.querySelectorAll('input[name="abschluss"]').forEach(function(r) { r.checked = false; });
+          document.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
         }
         validateForm();
       });
