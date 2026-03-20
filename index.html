@@ -122,10 +122,8 @@
       transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
       user-select: none;
     }
-    .uni-card img { max-height: 60px; max-width: 100%; object-fit: contain; margin-bottom: 0.5rem; }
-    .uni-card .uni-label { font-weight: 700; font-size: 0.9rem; color: var(--text); }
+    .uni-card img { max-height: 60px; max-width: 100%; object-fit: contain; }
     .uni-card.selected { border-color: var(--orange); background: var(--orange-light); box-shadow: var(--shadow); }
-    .uni-card.selected .uni-label { color: var(--orange-dark); }
     @media (hover: hover) {
       .uni-card:hover:not(.selected) { border-color: #ccc; box-shadow: var(--shadow-sm); }
     }
@@ -177,6 +175,20 @@
     .option-card.selected .check-circle::after { content: '\2713'; color: var(--white); font-size: 0.75rem; font-weight: 700; }
 
     .section-hidden { display: none; }
+
+    /* Intro-Text */
+    .intro-box {
+      background: var(--blau-light);
+      border-left: 4px solid var(--blau);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .intro-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
 
     /* Submit */
     .submit-area { text-align: center; margin-top: 1.25rem; }
@@ -267,6 +279,10 @@
   <div class="accent-bar"></div>
 
   <main>
+    <div class="intro-box">
+      <p class="intro-text">Bitte füllt dieses Formular vollständig aus, damit wir die Prüfungen der Skiausfahrt reibungslos organisieren können. Gebt zunächst euren Namen und eure Gruppe an, wählt eure Hochschule und bestätigt eure Prüfungsteilnahme. Abschließend gebt ihr an, welchen Abschluss ihr anstrebt. [Platzhalter – genauer Text folgt.]</p>
+    </div>
+
     <form id="umfrage-form" novalidate>
 
       <!-- Name -->
@@ -327,12 +343,10 @@
           <div class="uni-grid">
             <div class="uni-card" role="radio" aria-checked="false" tabindex="0" data-uni="RUB">
               <img src="img/sportwiss.png" alt="Fakultät für Sportwissenschaft, RUB">
-              <span class="uni-label">RUB</span>
               <input type="radio" name="uni" value="RUB" hidden>
             </div>
             <div class="uni-card" role="radio" aria-checked="false" tabindex="0" data-uni="TU">
               <img src="img/tu-dortmund.png" alt="TU Dortmund">
-              <span class="uni-label">TU Dortmund</span>
               <input type="radio" name="uni" value="TU" hidden>
             </div>
           </div>
