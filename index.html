@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pr\u00fcfungsorganisation Valmorel</title>
+  <title>Prüfungsorganisation Valmorel</title>
   <style>
     @font-face {
       font-family: 'RubFlama';
@@ -50,15 +50,8 @@
       text-align: center;
       padding: 1.5rem 1rem;
     }
-    header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-    header .subtitle {
-      font-size: 0.95rem;
-      opacity: 0.85;
-    }
+    header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+    header .subtitle { font-size: 0.95rem; opacity: 0.85; }
     .accent-bar {
       height: 4px;
       background: linear-gradient(90deg, var(--orange) 0%, #f5a623 100%);
@@ -79,17 +72,8 @@
       border: 1px solid var(--border);
     }
     fieldset { border: none; }
-    legend {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.35rem;
-      font-size: 0.95rem;
-    }
+    legend { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    label { display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.95rem; }
     .req { color: var(--orange); }
     input[type="text"] {
       width: 100%;
@@ -101,377 +85,175 @@
       color: var(--text);
       transition: border-color 0.2s;
     }
-    input[type="text"]:focus {
-      outline: none;
-      border-color: var(--orange);
-      background: var(--white);
-    }
+    input[type="text"]:focus { outline: none; border-color: var(--orange); background: var(--white); }
     .field-group { margin-bottom: 0.75rem; }
-    .error-msg {
-      display: block;
-      min-height: 1.1em;
-      font-size: 0.82rem;
-      color: #dc2626;
-      margin-top: 0.2rem;
-    }
+    .error-msg { display: block; min-height: 1.1em; font-size: 0.82rem; color: #dc2626; margin-top: 0.2rem; }
 
     /* Gruppen-Kacheln */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem;
-    }
+    .card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
     .card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       padding: 0.65rem;
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      background: var(--white);
+      font-weight: 700; font-size: 1.1rem;
+      cursor: pointer; background: var(--white);
       transition: border-color 0.2s, background 0.2s;
-      user-select: none;
-      position: relative;
+      user-select: none; position: relative;
     }
-    .card.selected {
-      border-color: var(--orange);
-      background: var(--orange-light);
-      color: var(--orange);
-    }
+    .card.selected { border-color: var(--orange); background: var(--orange-light); color: var(--orange); }
     .card.selected::after {
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--orange);
+      content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+      width: 6px; height: 6px; border-radius: 50%; background: var(--orange);
     }
     .card-snowboard { grid-column: 1 / -1; }
     @media (hover: hover) {
-      .card:hover:not(.selected) {
-        border-color: #ccc;
-        box-shadow: var(--shadow-sm);
-      }
+      .card:hover:not(.selected) { border-color: #ccc; box-shadow: var(--shadow-sm); }
     }
 
     /* Uni-Kacheln */
-    .uni-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-    }
+    .uni-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
     .uni-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 1.25rem 0.75rem;
       border: 2px solid var(--border);
       border-radius: var(--radius);
-      cursor: pointer;
-      background: var(--white);
+      cursor: pointer; background: var(--white);
       transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
       user-select: none;
     }
-    .uni-card img {
-      max-height: 60px;
-      max-width: 100%;
-      object-fit: contain;
-      margin-bottom: 0.5rem;
-    }
-    .uni-card .uni-label {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-    .uni-card.selected {
-      border-color: var(--orange);
-      background: var(--orange-light);
-      box-shadow: var(--shadow);
-    }
+    .uni-card img { max-height: 60px; max-width: 100%; object-fit: contain; margin-bottom: 0.5rem; }
+    .uni-card .uni-label { font-weight: 700; font-size: 0.9rem; color: var(--text); }
+    .uni-card.selected { border-color: var(--orange); background: var(--orange-light); box-shadow: var(--shadow); }
     .uni-card.selected .uni-label { color: var(--orange-dark); }
     @media (hover: hover) {
-      .uni-card:hover:not(.selected) {
-        border-color: #ccc;
-        box-shadow: var(--shadow-sm);
-      }
+      .uni-card:hover:not(.selected) { border-color: #ccc; box-shadow: var(--shadow-sm); }
     }
 
-    /* Pr\u00fcfungsteil-Best\u00e4tigung */
+    /* Prüfungsteil-Bestätigung */
     .confirm-card {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      display: flex; align-items: center; gap: 0.75rem;
       padding: 1rem;
       border: 2px solid var(--border);
       border-radius: var(--radius);
-      cursor: pointer;
-      background: var(--white);
+      cursor: pointer; background: var(--white);
       transition: border-color 0.2s, background 0.2s;
       user-select: none;
     }
     .confirm-card .check-box {
-      width: 24px;
-      height: 24px;
-      border: 2px solid var(--border);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, border-color 0.2s;
-      flex-shrink: 0;
+      width: 24px; height: 24px;
+      border: 2px solid var(--border); border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s; flex-shrink: 0;
     }
-    .confirm-card.selected .check-box {
-      background: var(--orange);
-      border-color: var(--orange);
-    }
-    .confirm-card.selected .check-box::after {
-      content: '\2713';
-      color: var(--white);
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-    .confirm-card.selected {
-      border-color: var(--orange);
-      background: var(--orange-light);
-    }
-    .confirm-card .confirm-text {
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
+    .confirm-card.selected .check-box { background: var(--orange); border-color: var(--orange); }
+    .confirm-card.selected .check-box::after { content: '\2713'; color: var(--white); font-size: 0.9rem; font-weight: 700; }
+    .confirm-card.selected { border-color: var(--orange); background: var(--orange-light); }
+    .confirm-card .confirm-text { font-weight: 600; font-size: 0.95rem; }
 
     /* Abschluss-Optionen */
     .option-list { display: flex; flex-direction: column; gap: 0.5rem; }
     .option-card {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      display: flex; align-items: center; gap: 0.75rem;
       padding: 0.85rem 1rem;
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
-      cursor: pointer;
-      background: var(--white);
+      cursor: pointer; background: var(--white);
       transition: border-color 0.2s, background 0.2s;
       user-select: none;
     }
-    .option-card .option-text {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .option-card .option-name {
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-    .option-card .option-desc {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.15rem;
-    }
+    .option-card .option-text { display: flex; flex-direction: column; flex: 1; }
+    .option-card .option-name { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+    .option-card .option-desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
     .option-card.selected .option-name { color: var(--orange-dark); }
     .option-card .check-circle {
-      width: 22px;
-      height: 22px;
-      border: 2px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, border-color 0.2s;
-      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border: 2px solid var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s; flex-shrink: 0;
     }
-    .option-card.selected {
-      border-color: var(--orange);
-      background: var(--orange-light);
-    }
-    .option-card.selected .check-circle {
-      background: var(--orange);
-      border-color: var(--orange);
-    }
-    .option-card.selected .check-circle::after {
-      content: '\2713';
-      color: var(--white);
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
+    .option-card.selected { border-color: var(--orange); background: var(--orange-light); }
+    .option-card.selected .check-circle { background: var(--orange); border-color: var(--orange); }
+    .option-card.selected .check-circle::after { content: '\2713'; color: var(--white); font-size: 0.75rem; font-weight: 700; }
 
-    /* Abschluss-Sektion: ausgeblendet bis Pr\u00fcfung best\u00e4tigt */
-    .section-hidden {
-      display: none;
-    }
+    .section-hidden { display: none; }
 
     /* Submit */
     .submit-area { text-align: center; margin-top: 1.25rem; }
     #submit-btn {
-      background: var(--orange);
-      color: var(--white);
-      border: none;
-      padding: 0.85rem 2.5rem;
-      font-size: 1.05rem;
-      font-weight: 700;
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-family: inherit;
+      background: var(--orange); color: var(--white); border: none;
+      padding: 0.85rem 2.5rem; font-size: 1.05rem; font-weight: 700;
+      border-radius: var(--radius); cursor: pointer; font-family: inherit;
       transition: background 0.2s, opacity 0.2s;
     }
     #submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     #submit-btn:not(:disabled):hover { background: var(--orange-dark); }
 
     /* Confirmation */
-    #confirmation {
-      text-align: center;
-      padding: 3rem 1rem;
-      animation: fadeUp 0.4s ease;
-    }
+    #confirmation { text-align: center; padding: 3rem 1rem; animation: fadeUp 0.4s ease; }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .conf-icon { font-size: 3rem; margin-bottom: 1rem; }
-    #confirmation-text {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--blau);
-      margin-bottom: 0.5rem;
-    }
-    .conf-sub {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-bottom: 1.25rem;
-    }
+    #confirmation-text { font-size: 1.15rem; font-weight: 700; color: var(--blau); margin-bottom: 0.5rem; }
+    .conf-sub { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.25rem; }
     #confirmation-choice {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem;
-      text-align: left;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border);
-      max-width: 400px;
-      margin: 0 auto;
+      background: var(--white); border-radius: var(--radius);
+      padding: 1rem 1.25rem; text-align: left;
+      box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+      max-width: 400px; margin: 0 auto;
     }
-    #confirmation-choice p {
-      padding: 0.4rem 0;
-      font-size: 0.9rem;
-    }
-    #confirmation-choice p:not(:last-child) {
-      border-bottom: 1px solid var(--border);
-    }
-    .conf-label {
-      font-weight: 600;
-      color: var(--text-muted);
-    }
+    #confirmation-choice p { padding: 0.4rem 0; font-size: 0.9rem; }
+    #confirmation-choice p:not(:last-child) { border-bottom: 1px solid var(--border); }
+    .conf-label { font-weight: 600; color: var(--text-muted); }
 
     /* Already voted */
     #already-voted { text-align: center; padding: 3rem 1rem; }
     .voted-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .voted-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--blau);
-    }
+    .voted-title { font-size: 1.15rem; font-weight: 700; color: var(--blau); }
     .voted-text { font-size: 0.9rem; color: var(--text-muted); }
 
     /* Footer */
     footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      border-top: 1px solid var(--border);
-      background: var(--white);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 2rem;
+      text-align: center; padding: 1.5rem 1rem;
+      border-top: 1px solid var(--border); background: var(--white);
+      display: flex; justify-content: center; align-items: center; gap: 2rem;
     }
-    footer img {
-      max-height: 40px;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-    }
+    footer img { max-height: 40px; opacity: 0.7; transition: opacity 0.2s; }
     footer img:hover { opacity: 1; }
 
     /* Admin */
-    #admin-view {
-      display: none;
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    #admin-view h2 {
-      color: var(--blau);
-      margin-bottom: 1rem;
-    }
+    #admin-view { display: none; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    #admin-view h2 { color: var(--blau); margin-bottom: 1rem; }
     .admin-table-wrap { overflow-x: auto; }
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     .admin-table th {
-      background: var(--blau);
-      color: var(--white);
-      padding: 0.6rem 0.5rem;
-      text-align: left;
-      cursor: pointer;
-      user-select: none;
-      white-space: nowrap;
+      background: var(--blau); color: var(--white);
+      padding: 0.6rem 0.5rem; text-align: left;
+      cursor: pointer; user-select: none; white-space: nowrap;
     }
-    .admin-table th.sort-asc::after { content: ' \u25B2'; }
-    .admin-table th.sort-desc::after { content: ' \u25BC'; }
-    .admin-table td {
-      padding: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
+    .admin-table th.sort-asc::after { content: ' \25B2'; }
+    .admin-table th.sort-desc::after { content: ' \25BC'; }
+    .admin-table td { padding: 0.5rem; border-bottom: 1px solid var(--border); }
     .admin-table tr:nth-child(even) { background: #f9fafb; }
     .admin-table .btn-del {
-      background: #dc2626;
-      color: var(--white);
-      border: none;
-      padding: 0.3rem 0.6rem;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-size: 0.78rem;
+      background: #dc2626; color: var(--white); border: none;
+      padding: 0.3rem 0.6rem; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 0.78rem;
     }
-    #admin-summary {
-      display: flex;
-      gap: 2rem;
-      margin-bottom: 0.75rem;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--blau);
-    }
-    #admin-group-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
+    #admin-summary { display: flex; gap: 2rem; margin-bottom: 0.75rem; font-size: 1rem; font-weight: 700; color: var(--blau); }
+    #admin-group-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
     .group-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: var(--blau-light);
-      color: var(--blau);
-      padding: 0.25rem 0.65rem;
-      border-radius: 20px;
-      font-size: 0.82rem;
-      font-weight: 600;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: var(--blau-light); color: var(--blau);
+      padding: 0.25rem 0.65rem; border-radius: 20px;
+      font-size: 0.82rem; font-weight: 600;
     }
     .group-badge .count {
-      background: var(--blau);
-      color: var(--white);
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      background: var(--blau); color: var(--white); border-radius: 50%;
+      width: 20px; height: 20px;
+      display: inline-flex; align-items: center; justify-content: center;
       font-size: 0.72rem;
     }
   </style>
@@ -479,12 +261,12 @@
 <body>
 
   <header>
-    <h1>Pr\u00fcfungsorganisation</h1>
+    <h1>Prüfungsorganisation</h1>
     <p class="subtitle">Skiausfahrt Valmorel 2026</p>
   </header>
   <div class="accent-bar"></div>
 
-<main>
+  <main>
     <form id="umfrage-form" novalidate>
 
       <!-- Name -->
@@ -504,7 +286,7 @@
       <!-- Gruppe -->
       <div class="form-section">
         <fieldset>
-          <legend>\u26F7\uFE0F Gruppe <span class="req">*</span></legend>
+          <legend>&#x26F7; Gruppe <span class="req">*</span></legend>
           <div class="card-grid">
             <div class="card" role="radio" aria-checked="false" tabindex="0" data-group="1">
               1<input type="radio" name="gruppe" value="1" hidden>
@@ -538,13 +320,13 @@
         </fieldset>
       </div>
 
-      <!-- Universit\u00e4t -->
+      <!-- Universität -->
       <div class="form-section">
         <fieldset>
-          <legend>\uD83C\uDFEB Universit\u00e4t <span class="req">*</span></legend>
+          <legend>&#x1F3EB; Universität <span class="req">*</span></legend>
           <div class="uni-grid">
             <div class="uni-card" role="radio" aria-checked="false" tabindex="0" data-uni="RUB">
-              <img src="img/sportwiss.png" alt="Fakult\u00e4t f\u00fcr Sportwissenschaft, RUB">
+              <img src="img/sportwiss.png" alt="Fakultät für Sportwissenschaft, RUB">
               <span class="uni-label">RUB</span>
               <input type="radio" name="uni" value="RUB" hidden>
             </div>
@@ -558,10 +340,10 @@
         </fieldset>
       </div>
 
-      <!-- Pr\u00fcfungsteil -->
+      <!-- Prüfungsteil -->
       <div class="form-section">
         <fieldset>
-          <legend>\u2705 Pr\u00fcfungsteilnahme <span class="req">*</span></legend>
+          <legend>&#x2705; Prüfungsteilnahme <span class="req">*</span></legend>
           <div class="confirm-card" role="checkbox" aria-checked="false" tabindex="0" id="pruefung-confirm">
             <span class="check-box"></span>
             <span class="confirm-text">Ich nehme an der freien Abfahrt teil</span>
@@ -574,7 +356,7 @@
       <!-- Abschluss (bedingt sichtbar) -->
       <div class="form-section section-hidden" id="abschluss-section">
         <fieldset>
-          <legend>\uD83C\uDF93 Angestrebter Abschluss <span class="req">*</span></legend>
+          <legend>&#x1F393; Angestrebter Abschluss <span class="req">*</span></legend>
           <div class="option-list">
             <div class="option-card" role="radio" aria-checked="false" tabindex="0" data-abschluss="studienleistung">
               <span class="option-text">
@@ -621,21 +403,21 @@
     </form>
 
     <div id="confirmation" style="display:none">
-      <div class="conf-icon">\u2705</div>
+      <div class="conf-icon">&#x2705;</div>
       <p id="confirmation-text"></p>
       <p class="conf-sub">Deine Angaben wurden gespeichert.</p>
       <div id="confirmation-choice"></div>
     </div>
 
     <div id="already-voted" style="display:none">
-      <div class="voted-icon">\uD83D\uDC4B</div>
+      <div class="voted-icon">&#x1F44B;</div>
       <p class="voted-title">Bereits abgestimmt</p>
-      <p class="voted-text">Du hast bereits deine Angaben gemacht \u2013 danke!</p>
+      <p class="voted-text">Du hast bereits deine Angaben gemacht &ndash; danke!</p>
     </div>
   </main>
 
   <div id="admin-view">
-    <h2>Admin &mdash; Pr\u00fcfungsorganisation Valmorel</h2>
+    <h2>Admin &mdash; Prüfungsorganisation Valmorel</h2>
     <p id="admin-loading">Daten werden geladen&hellip;</p>
     <p id="admin-error" hidden></p>
     <div id="admin-summary" hidden></div>
@@ -647,7 +429,7 @@
           <th data-col="vorname">Vorname</th>
           <th data-col="gruppe">Gruppe</th>
           <th data-col="uni">Uni</th>
-          <th data-col="pruefung">Pr\u00fcfung</th>
+          <th data-col="pruefung">Prüfung</th>
           <th data-col="abschluss">Abschluss</th>
           <th data-col="timestamp">Zeitstempel</th>
           <th style="width:90px">Aktionen</th>
@@ -659,243 +441,203 @@
   </div>
 
   <footer>
-    <img src="img/sportwiss.png" alt="Fakult\u00e4t f\u00fcr Sportwissenschaft">
+    <img src="img/sportwiss.png" alt="Fakultät für Sportwissenschaft">
     <img src="img/tu-dortmund.png" alt="TU Dortmund">
   </footer>
 
   <script>
-    const JSONBIN_API_KEY = '$2a$10$zGXaVO.aENSHDxnvvMNtIOI8xABxjtblg/75LMqOWhX0nPd9JjRo2';
-    const JSONBIN_BIN_ID = '69bd6303b7ec241ddc88081a';
+    var JSONBIN_API_KEY = '$2a$10$zGXaVO.aENSHDxnvvMNtIOI8xABxjtblg/75LMqOWhX0nPd9JjRo2';
+    var JSONBIN_BIN_ID = '69bd6303b7ec241ddc88081a';
 
-    document.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem('pruefung_voted')) {
-        document.getElementById('umfrage-form').style.display = 'none';
-        document.getElementById('already-voted').style.display = 'block';
-        return;
-      }
-
-      initKacheln();
-      initValidierung();
-      initSubmit();
-      initAdmin();
-    });
-
-    /* ── Kachel-Interaktion ── */
-    function initKacheln() {
-      // Gruppen-Kacheln (radio)
-      document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', () => {
-          document.querySelectorAll('.card').forEach(c => {
-            c.classList.remove('selected');
-            c.setAttribute('aria-checked', 'false');
-          });
-          card.classList.add('selected');
-          card.setAttribute('aria-checked', 'true');
-          card.querySelector('input[type="radio"]').checked = true;
-          validateForm();
-        });
-        card.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-        });
-      });
-
-      // Uni-Kacheln (radio)
-      document.querySelectorAll('.uni-card').forEach(card => {
-        card.addEventListener('click', () => {
-          document.querySelectorAll('.uni-card').forEach(c => {
-            c.classList.remove('selected');
-            c.setAttribute('aria-checked', 'false');
-          });
-          card.classList.add('selected');
-          card.setAttribute('aria-checked', 'true');
-          card.querySelector('input[type="radio"]').checked = true;
-          validateForm();
-        });
-        card.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-        });
-      });
-
-      // Pr\u00fcfungsteil-Best\u00e4tigung (checkbox toggle)
-      const confirmCard = document.getElementById('pruefung-confirm');
-      confirmCard.addEventListener('click', () => {
-        const cb = confirmCard.querySelector('input[type="checkbox"]');
-        const isChecked = cb.checked;
-        cb.checked = !isChecked;
-        confirmCard.classList.toggle('selected', !isChecked);
-        confirmCard.setAttribute('aria-checked', String(!isChecked));
-
-        const abschlussSection = document.getElementById('abschluss-section');
-        if (!isChecked) {
-          abschlussSection.classList.remove('section-hidden');
-        } else {
-          abschlussSection.classList.add('section-hidden');
-          // Abschluss zur\u00fccksetzen
-          document.querySelectorAll('.option-card').forEach(c => {
-            c.classList.remove('selected');
-            c.setAttribute('aria-checked', 'false');
-          });
-          document.querySelectorAll('input[name="abschluss"]').forEach(r => r.checked = false);
-        }
-        validateForm();
-      });
-      confirmCard.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); confirmCard.click(); }
-      });
-
-      // Abschluss-Kacheln (radio)
-      document.querySelectorAll('.option-card').forEach(card => {
-        card.addEventListener('click', () => {
-          document.querySelectorAll('.option-card').forEach(c => {
-            c.classList.remove('selected');
-            c.setAttribute('aria-checked', 'false');
-          });
-          card.classList.add('selected');
-          card.setAttribute('aria-checked', 'true');
-          card.querySelector('input[type="radio"]').checked = true;
-          validateForm();
-        });
-        card.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-        });
-      });
-    }
-
-    /* ── Validierung ── */
-    function initValidierung() {
-      document.getElementById('vorname').addEventListener('input', validateForm);
-      document.getElementById('nachname').addEventListener('input', validateForm);
-    }
-
-    function validateForm() {
-      const vorname = document.getElementById('vorname').value.trim();
-      const nachname = document.getElementById('nachname').value.trim();
-      const gruppeOk = document.querySelector('input[name="gruppe"]:checked');
-      const uniOk = document.querySelector('input[name="uni"]:checked');
-      const pruefungOk = document.querySelector('input[name="pruefung"]').checked;
-      const abschlussOk = document.querySelector('input[name="abschluss"]:checked');
-
-      const valid = vorname.length >= 2 && nachname.length >= 2
-        && gruppeOk && uniOk && pruefungOk && abschlussOk;
-      document.getElementById('submit-btn').disabled = !valid;
-    }
-
-    /* ── Submit ── */
-    function initSubmit() {
-      document.getElementById('umfrage-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const vorname = document.getElementById('vorname').value.trim();
-        const nachname = document.getElementById('nachname').value.trim();
-        const gruppe = document.querySelector('input[name="gruppe"]:checked')?.value;
-        const uni = document.querySelector('input[name="uni"]:checked')?.value;
-        const pruefung = document.querySelector('input[name="pruefung"]').checked ? 'Freie Abfahrt' : '';
-        const abschluss = document.querySelector('input[name="abschluss"]:checked')?.value;
-
-        let hasError = false;
-
-        if (vorname.length < 2) {
-          document.getElementById('vorname-error').textContent = 'Bitte Vorname eingeben (mindestens 2 Zeichen).';
-          hasError = true;
-        } else {
-          document.getElementById('vorname-error').textContent = '';
-        }
-
-        if (nachname.length < 2) {
-          document.getElementById('nachname-error').textContent = 'Bitte Nachname eingeben (mindestens 2 Zeichen).';
-          hasError = true;
-        } else {
-          document.getElementById('nachname-error').textContent = '';
-        }
-
-        if (!gruppe) {
-          document.getElementById('gruppe-error').textContent = 'Bitte eine Gruppe ausw\u00e4hlen.';
-          hasError = true;
-        } else {
-          document.getElementById('gruppe-error').textContent = '';
-        }
-
-        if (!uni) {
-          document.getElementById('uni-error').textContent = 'Bitte eine Universit\u00e4t ausw\u00e4hlen.';
-          hasError = true;
-        } else {
-          document.getElementById('uni-error').textContent = '';
-        }
-
-        if (!pruefung) {
-          document.getElementById('pruefung-error').textContent = 'Bitte Pr\u00fcfungsteilnahme best\u00e4tigen.';
-          hasError = true;
-        } else {
-          document.getElementById('pruefung-error').textContent = '';
-        }
-
-        if (!abschluss) {
-          document.getElementById('abschluss-error').textContent = 'Bitte einen Abschluss ausw\u00e4hlen.';
-          hasError = true;
-        } else {
-          document.getElementById('abschluss-error').textContent = '';
-        }
-
-        if (hasError) return;
-
-        const data = { vorname, nachname, gruppe, uni, pruefung, abschluss };
-        await saveToJsonBin(data);
-      });
-    }
-
-    /* ── JSONBin ── */
-    async function saveToJsonBin(antwort) {
-      const btn = document.getElementById('submit-btn');
-      const errEl = document.getElementById('network-error');
-      btn.disabled = true;
-      btn.textContent = 'Wird gespeichert\u2026';
-      errEl.textContent = '';
-
-      try {
-        const res = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID + '/latest', {
-          headers: { 'X-Master-Key': JSONBIN_API_KEY }
-        });
-        if (!res.ok) throw new Error('Laden fehlgeschlagen');
-        const json = await res.json();
-        let records = json.record;
-        if (!Array.isArray(records)) records = [];
-        // init-Eintrag entfernen
-        records = records.filter(r => !r._init);
-
-        antwort.timestamp = new Date().toISOString();
-        records.push(antwort);
-
-        const putRes = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': JSONBIN_API_KEY
-          },
-          body: JSON.stringify(records)
-        });
-        if (!putRes.ok) throw new Error('Speichern fehlgeschlagen');
-
-        sessionStorage.setItem('pruefung_voted', '1');
-        showConfirmation(antwort);
-      } catch (err) {
-        errEl.textContent = 'Fehler beim Speichern. Bitte erneut versuchen.';
-        btn.disabled = false;
-        btn.textContent = 'Absenden';
-      }
-    }
-
-    const ABSCHLUSS_LABELS = {
+    var ABSCHLUSS_LABELS = {
       'studienleistung': 'Studienleistung',
       'lizenz': 'Lizenz',
       'schulzertifikat': 'Schulzertifikat',
       'zertifikat-schneesport': 'Zertifikat Schneesport an Schulen'
     };
 
+    document.addEventListener('DOMContentLoaded', function() {
+      if (sessionStorage.getItem('pruefung_voted')) {
+        document.getElementById('umfrage-form').style.display = 'none';
+        document.getElementById('already-voted').style.display = 'block';
+        return;
+      }
+      initKacheln();
+      initValidierung();
+      initSubmit();
+      initAdmin();
+    });
+
+    function initKacheln() {
+      // Gruppen-Kacheln
+      document.querySelectorAll('.card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          document.querySelectorAll('.card').forEach(function(c) {
+            c.classList.remove('selected');
+            c.setAttribute('aria-checked', 'false');
+          });
+          card.classList.add('selected');
+          card.setAttribute('aria-checked', 'true');
+          card.querySelector('input[type="radio"]').checked = true;
+          validateForm();
+        });
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+        });
+      });
+
+      // Uni-Kacheln
+      document.querySelectorAll('.uni-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          document.querySelectorAll('.uni-card').forEach(function(c) {
+            c.classList.remove('selected');
+            c.setAttribute('aria-checked', 'false');
+          });
+          card.classList.add('selected');
+          card.setAttribute('aria-checked', 'true');
+          card.querySelector('input[type="radio"]').checked = true;
+          validateForm();
+        });
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+        });
+      });
+
+      // Prüfungsteil-Bestätigung
+      var confirmCard = document.getElementById('pruefung-confirm');
+      confirmCard.addEventListener('click', function() {
+        var cb = confirmCard.querySelector('input[type="checkbox"]');
+        var isChecked = cb.checked;
+        cb.checked = !isChecked;
+        confirmCard.classList.toggle('selected', !isChecked);
+        confirmCard.setAttribute('aria-checked', String(!isChecked));
+
+        var abschlussSection = document.getElementById('abschluss-section');
+        if (!isChecked) {
+          abschlussSection.classList.remove('section-hidden');
+        } else {
+          abschlussSection.classList.add('section-hidden');
+          document.querySelectorAll('.option-card').forEach(function(c) {
+            c.classList.remove('selected');
+            c.setAttribute('aria-checked', 'false');
+          });
+          document.querySelectorAll('input[name="abschluss"]').forEach(function(r) { r.checked = false; });
+        }
+        validateForm();
+      });
+      confirmCard.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); confirmCard.click(); }
+      });
+
+      // Abschluss-Kacheln
+      document.querySelectorAll('.option-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          document.querySelectorAll('.option-card').forEach(function(c) {
+            c.classList.remove('selected');
+            c.setAttribute('aria-checked', 'false');
+          });
+          card.classList.add('selected');
+          card.setAttribute('aria-checked', 'true');
+          card.querySelector('input[type="radio"]').checked = true;
+          validateForm();
+        });
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+        });
+      });
+    }
+
+    function initValidierung() {
+      document.getElementById('vorname').addEventListener('input', validateForm);
+      document.getElementById('nachname').addEventListener('input', validateForm);
+    }
+
+    function validateForm() {
+      var vorname = document.getElementById('vorname').value.trim();
+      var nachname = document.getElementById('nachname').value.trim();
+      var gruppeOk = document.querySelector('input[name="gruppe"]:checked');
+      var uniOk = document.querySelector('input[name="uni"]:checked');
+      var pruefungOk = document.querySelector('input[name="pruefung"]').checked;
+      var abschlussOk = document.querySelector('input[name="abschluss"]:checked');
+      var valid = vorname.length >= 2 && nachname.length >= 2 && gruppeOk && uniOk && pruefungOk && abschlussOk;
+      document.getElementById('submit-btn').disabled = !valid;
+    }
+
+    function initSubmit() {
+      document.getElementById('umfrage-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var vorname = document.getElementById('vorname').value.trim();
+        var nachname = document.getElementById('nachname').value.trim();
+        var gruppeEl = document.querySelector('input[name="gruppe"]:checked');
+        var uniEl = document.querySelector('input[name="uni"]:checked');
+        var pruefungEl = document.querySelector('input[name="pruefung"]');
+        var abschlussEl = document.querySelector('input[name="abschluss"]:checked');
+
+        var gruppe = gruppeEl ? gruppeEl.value : null;
+        var uni = uniEl ? uniEl.value : null;
+        var pruefung = pruefungEl.checked ? 'Freie Abfahrt' : null;
+        var abschluss = abschlussEl ? abschlussEl.value : null;
+
+        var hasError = false;
+        if (vorname.length < 2) { document.getElementById('vorname-error').textContent = 'Bitte Vorname eingeben (mindestens 2 Zeichen).'; hasError = true; }
+        else { document.getElementById('vorname-error').textContent = ''; }
+        if (nachname.length < 2) { document.getElementById('nachname-error').textContent = 'Bitte Nachname eingeben (mindestens 2 Zeichen).'; hasError = true; }
+        else { document.getElementById('nachname-error').textContent = ''; }
+        if (!gruppe) { document.getElementById('gruppe-error').textContent = 'Bitte eine Gruppe ausw\u00e4hlen.'; hasError = true; }
+        else { document.getElementById('gruppe-error').textContent = ''; }
+        if (!uni) { document.getElementById('uni-error').textContent = 'Bitte eine Universit\u00e4t ausw\u00e4hlen.'; hasError = true; }
+        else { document.getElementById('uni-error').textContent = ''; }
+        if (!pruefung) { document.getElementById('pruefung-error').textContent = 'Bitte Pr\u00fcfungsteilnahme best\u00e4tigen.'; hasError = true; }
+        else { document.getElementById('pruefung-error').textContent = ''; }
+        if (!abschluss) { document.getElementById('abschluss-error').textContent = 'Bitte einen Abschluss ausw\u00e4hlen.'; hasError = true; }
+        else { document.getElementById('abschluss-error').textContent = ''; }
+        if (hasError) return;
+
+        saveToJsonBin({ vorname: vorname, nachname: nachname, gruppe: gruppe, uni: uni, pruefung: pruefung, abschluss: abschluss });
+      });
+    }
+
+    function saveToJsonBin(antwort) {
+      var btn = document.getElementById('submit-btn');
+      var errEl = document.getElementById('network-error');
+      btn.disabled = true;
+      btn.textContent = 'Wird gespeichert\u2026';
+      errEl.textContent = '';
+
+      fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID + '/latest', {
+        headers: { 'X-Master-Key': JSONBIN_API_KEY }
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Laden fehlgeschlagen');
+        return res.json();
+      })
+      .then(function(json) {
+        var records = Array.isArray(json.record) ? json.record : [];
+        records = records.filter(function(r) { return !r._init; });
+        antwort.timestamp = new Date().toISOString();
+        records.push(antwort);
+        return fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+          body: JSON.stringify(records)
+        });
+      })
+      .then(function(putRes) {
+        if (!putRes.ok) throw new Error('Speichern fehlgeschlagen');
+        sessionStorage.setItem('pruefung_voted', '1');
+        showConfirmation(antwort);
+      })
+      .catch(function() {
+        errEl.textContent = 'Fehler beim Speichern. Bitte erneut versuchen.';
+        btn.disabled = false;
+        btn.textContent = 'Absenden';
+      });
+    }
+
     function showConfirmation(data) {
       document.getElementById('umfrage-form').style.display = 'none';
       document.getElementById('confirmation').style.display = 'block';
-      document.getElementById('confirmation-text').textContent =
-        'Danke, ' + escHtml(data.vorname) + '!';
+      document.getElementById('confirmation-text').textContent = 'Danke, ' + escHtml(data.vorname) + '!';
       document.getElementById('confirmation-choice').innerHTML =
         '<p><span class="conf-label">Gruppe:</span> ' + escHtml(data.gruppe) + '</p>' +
         '<p><span class="conf-label">Uni:</span> ' + escHtml(data.uni) + '</p>' +
@@ -903,7 +645,6 @@
         '<p><span class="conf-label">Abschluss:</span> ' + escHtml(ABSCHLUSS_LABELS[data.abschluss] || data.abschluss) + '</p>';
     }
 
-    /* ── Admin ── */
     function initAdmin() {
       if (new URLSearchParams(location.search).get('admin') !== 'true') return;
       document.querySelector('main').style.display = 'none';
@@ -912,35 +653,36 @@
       loadAdminData();
     }
 
-    async function loadAdminData() {
-      try {
-        const res = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID + '/latest', {
-          headers: { 'X-Master-Key': JSONBIN_API_KEY }
-        });
+    function loadAdminData() {
+      fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID + '/latest', {
+        headers: { 'X-Master-Key': JSONBIN_API_KEY }
+      })
+      .then(function(res) {
         if (!res.ok) throw new Error('Laden fehlgeschlagen');
-        const json = await res.json();
-        let records = json.record;
-        if (!Array.isArray(records)) records = [];
-        window._adminRecords = records.filter(r => !r._init);
+        return res.json();
+      })
+      .then(function(json) {
+        var records = Array.isArray(json.record) ? json.record : [];
+        window._adminRecords = records.filter(function(r) { return !r._init; });
         renderAdminTable('nachname', 'asc');
-      } catch (err) {
+      })
+      .catch(function(err) {
         document.getElementById('admin-loading').style.display = 'none';
-        const errEl = document.getElementById('admin-error');
+        var errEl = document.getElementById('admin-error');
         errEl.hidden = false;
         errEl.textContent = 'Fehler beim Laden: ' + err.message;
-      }
+      });
     }
 
     function renderAdminTable(sortField, sortDir) {
-      const records = window._adminRecords || [];
+      var records = window._adminRecords || [];
       document.getElementById('admin-loading').style.display = 'none';
 
-      // Sort
-      const sorted = [...records].sort((a, b) => {
-        let va = (a[sortField] || '').toString().toLowerCase();
-        let vb = (b[sortField] || '').toString().toLowerCase();
+      var sorted = records.slice().sort(function(a, b) {
+        var va = (a[sortField] || '').toString().toLowerCase();
+        var vb = (b[sortField] || '').toString().toLowerCase();
         if (sortField === 'gruppe') {
-          const na = parseInt(va), nb = parseInt(vb);
+          var na = parseInt(va), nb = parseInt(vb);
           if (!isNaN(na) && !isNaN(nb)) return sortDir === 'asc' ? na - nb : nb - na;
           if (!isNaN(na)) return -1;
           if (!isNaN(nb)) return 1;
@@ -948,131 +690,122 @@
         return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
       });
 
-      // Table
-      const tbody = document.getElementById('admin-tbody');
-      tbody.innerHTML = sorted.map(r =>
-        '<tr>' +
-        '<td>' + escHtml(r.nachname || '') + '</td>' +
-        '<td>' + escHtml(r.vorname || '') + '</td>' +
-        '<td>' + escHtml(r.gruppe || '') + '</td>' +
-        '<td>' + escHtml(r.uni || '') + '</td>' +
-        '<td>' + escHtml(r.pruefung || '') + '</td>' +
-        '<td>' + escHtml(ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || '') + '</td>' +
-        '<td>' + (r.timestamp ? new Date(r.timestamp).toLocaleString('de-DE') : '') + '</td>' +
-        '<td><button class="btn-del" data-ts="' + escHtml(r.timestamp || '') + '">L\u00f6schen</button></td>' +
-        '</tr>'
-      ).join('');
+      var tbody = document.getElementById('admin-tbody');
+      tbody.innerHTML = sorted.map(function(r) {
+        return '<tr>' +
+          '<td>' + escHtml(r.nachname || '') + '</td>' +
+          '<td>' + escHtml(r.vorname || '') + '</td>' +
+          '<td>' + escHtml(r.gruppe || '') + '</td>' +
+          '<td>' + escHtml(r.uni || '') + '</td>' +
+          '<td>' + escHtml(r.pruefung || '') + '</td>' +
+          '<td>' + escHtml(ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || '') + '</td>' +
+          '<td>' + (r.timestamp ? new Date(r.timestamp).toLocaleString('de-DE') : '') + '</td>' +
+          '<td><button class="btn-del" data-ts="' + escHtml(r.timestamp || '') + '">L\u00f6schen</button></td>' +
+          '</tr>';
+      }).join('');
 
-      const table = document.getElementById('admin-table');
+      var table = document.getElementById('admin-table');
       table.hidden = false;
 
-      // Sort headers
-      table.querySelectorAll('th[data-col]').forEach(th => {
+      table.querySelectorAll('th[data-col]').forEach(function(th) {
         th.classList.remove('sort-asc', 'sort-desc');
         if (th.dataset.col === sortField) th.classList.add('sort-' + sortDir);
-        th.onclick = () => {
-          const newDir = th.dataset.col === sortField && sortDir === 'asc' ? 'desc' : 'asc';
+        th.onclick = function() {
+          var newDir = (th.dataset.col === sortField && sortDir === 'asc') ? 'desc' : 'asc';
           renderAdminTable(th.dataset.col, newDir);
         };
       });
 
-      // Delete buttons
-      tbody.querySelectorAll('.btn-del').forEach(btn => {
-        btn.addEventListener('click', () => deleteRecord(btn.dataset.ts));
+      tbody.querySelectorAll('.btn-del').forEach(function(btn) {
+        btn.addEventListener('click', function() { deleteRecord(btn.dataset.ts); });
       });
 
-      // Summary
-      const summary = document.getElementById('admin-summary');
+      var summary = document.getElementById('admin-summary');
       summary.hidden = false;
-
-      const abschlussCount = {};
-      records.forEach(r => {
-        const label = ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || 'Unbekannt';
+      var abschlussCount = {};
+      records.forEach(function(r) {
+        var label = ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || 'Unbekannt';
         abschlussCount[label] = (abschlussCount[label] || 0) + 1;
       });
-      let summaryHtml = '<span>Gesamt: ' + records.length + '</span>';
-      for (const [label, count] of Object.entries(abschlussCount)) {
-        summaryHtml += '<span>' + escHtml(label) + ': ' + count + '</span>';
-      }
+      var summaryHtml = '<span>Gesamt: ' + records.length + '</span>';
+      Object.keys(abschlussCount).forEach(function(label) {
+        summaryHtml += '<span>' + escHtml(label) + ': ' + abschlussCount[label] + '</span>';
+      });
       summary.innerHTML = summaryHtml;
 
-      // Group badges
-      const badges = document.getElementById('admin-group-badges');
+      var badges = document.getElementById('admin-group-badges');
       badges.hidden = false;
-      const groups = ['1','2','3','4','5','6','7','8','Snowboard'];
-      badges.innerHTML = groups.map(g => {
-        const count = records.filter(r => r.gruppe === g).length;
-        return '<span class="group-badge">Gruppe ' + escHtml(g) +
-          ' <span class="count">' + count + '</span></span>';
+      var groups = ['1','2','3','4','5','6','7','8','Snowboard'];
+      badges.innerHTML = groups.map(function(g) {
+        var count = records.filter(function(r) { return r.gruppe === g; }).length;
+        return '<span class="group-badge">Gruppe ' + escHtml(g) + ' <span class="count">' + count + '</span></span>';
       }).join('');
 
-      // PDF button
-      const pdfBtn = document.getElementById('pdf-btn');
+      var pdfBtn = document.getElementById('pdf-btn');
       pdfBtn.hidden = false;
       pdfBtn.onclick = generatePdf;
     }
 
-    async function deleteRecord(timestamp) {
+    function deleteRecord(timestamp) {
       if (!confirm('Eintrag wirklich l\u00f6schen?')) return;
-      window._adminRecords = window._adminRecords.filter(r => r.timestamp !== timestamp);
-      try {
-        await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': JSONBIN_API_KEY
-          },
-          body: JSON.stringify(window._adminRecords)
-        });
+      window._adminRecords = window._adminRecords.filter(function(r) { return r.timestamp !== timestamp; });
+      fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+        body: JSON.stringify(window._adminRecords)
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Fehler');
         renderAdminTable('nachname', 'asc');
-      } catch (err) {
+      })
+      .catch(function() {
         alert('Fehler beim L\u00f6schen. Seite wird neu geladen.');
         location.reload();
+      });
+    }
+
+    function generatePdf() {
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')
+        .then(function() {
+          return loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+        })
+        .then(function() { doPdf(); });
+      } else {
+        doPdf();
       }
     }
 
-    /* ── PDF ── */
-    async function generatePdf() {
-      if (!window.jspdf?.jsPDF) {
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
-      }
-
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      const records = window._adminRecords || [];
+    function doPdf() {
+      var jsPDF = window.jspdf.jsPDF;
+      var doc = new jsPDF();
+      var records = window._adminRecords || [];
 
       doc.setFontSize(16);
       doc.setTextColor(0, 53, 96);
-      doc.text('Pr\u00fcfungsorganisation Valmorel', 14, 20);
+      doc.text('Pruefungsorganisation Valmorel', 14, 20);
 
       doc.setFontSize(10);
       doc.setTextColor(100);
-      const today = new Date().toLocaleDateString('de-DE');
+      var today = new Date().toLocaleDateString('de-DE');
       doc.text('Datum: ' + today + '  |  Teilnehmer: ' + records.length, 14, 28);
 
       doc.autoTable({
         startY: 34,
-        head: [['Nachname', 'Vorname', 'Gruppe', 'Uni', 'Pr\u00fcfung', 'Abschluss']],
-        body: records.map(r => [
-          r.nachname || '',
-          r.vorname || '',
-          r.gruppe || '',
-          r.uni || '',
-          r.pruefung || '',
-          ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || ''
-        ]),
+        head: [['Nachname', 'Vorname', 'Gruppe', 'Uni', 'Pruefung', 'Abschluss']],
+        body: records.map(function(r) {
+          return [r.nachname || '', r.vorname || '', r.gruppe || '', r.uni || '', r.pruefung || '', ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || ''];
+        }),
         styles: { fontSize: 8, cellPadding: 2 },
         headStyles: { fillColor: [0, 53, 96] }
       });
 
-      // Summary
-      const abschlussCount = {};
-      records.forEach(r => {
-        const label = ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || 'Unbekannt';
+      var abschlussCount = {};
+      records.forEach(function(r) {
+        var label = ABSCHLUSS_LABELS[r.abschluss] || r.abschluss || 'Unbekannt';
         abschlussCount[label] = (abschlussCount[label] || 0) + 1;
       });
-      const summaryBody = Object.entries(abschlussCount).map(([label, count]) => [label, String(count)]);
+      var summaryBody = Object.keys(abschlussCount).map(function(label) { return [label, String(abschlussCount[label])]; });
       summaryBody.push(['Gesamt', String(records.length)]);
 
       doc.autoTable({
@@ -1087,18 +820,15 @@
     }
 
     function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.onload = resolve;
-        s.onerror = reject;
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = src; s.onload = resolve; s.onerror = reject;
         document.head.appendChild(s);
       });
     }
 
-    /* ── Helpers ── */
     function escHtml(str) {
-      const d = document.createElement('div');
+      var d = document.createElement('div');
       d.textContent = str;
       return d.innerHTML;
     }
