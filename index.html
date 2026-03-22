@@ -495,7 +495,7 @@
   <div id="admin-view">
     <div class="admin-header">
       <h2>&#x1F4CB; Seminarabschluss Schneesport &mdash; Admin</h2>
-      <button class="btn-pdf" id="pdf-btn" hidden>&#x2B73; PDF</button>
+      <button class="btn-pdf" id="excel-btn" hidden>&#x2B73; Excel</button>
     </div>
     <p id="admin-loading" style="padding:1rem 1.25rem">Daten werden geladen&hellip;</p>
     <p id="admin-error" hidden style="padding:1rem 1.25rem; color:#dc2626"></p>
@@ -828,9 +828,9 @@
         return '<span class="group-badge">Gr. ' + escHtml(g) + ' <span class="count">' + count + '</span></span>';
       }).join('');
 
-      var pdfBtn = document.getElementById('pdf-btn');
-      pdfBtn.hidden = false;
-      pdfBtn.onclick = generatePdf;
+      var excelBtn = document.getElementById('excel-btn');
+      excelBtn.hidden = false;
+      excelBtn.onclick = generateExcel;
     }
 
     function deleteRecord(timestamp) {
@@ -851,64 +851,54 @@
       });
     }
 
-    function generatePdf() {
-      if (!window.jspdf || !window.jspdf.jsPDF) {
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')
-        .then(function() {
-          return loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
-        })
-        .then(function() { doPdf(); });
+    function generateExcel() {
+      if (!window.XLSX) {
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js')
+        .then(function() { doExcel(); });
       } else {
-        doPdf();
+        doExcel();
       }
     }
 
-    function doPdf() {
-      var jsPDF = window.jspdf.jsPDF;
-      var doc = new jsPDF();
+    function doExcel() {
       var records = window._adminRecords || [];
+      var wb = XLSX.utils.book_new();
 
-      doc.setFontSize(16);
-      doc.setTextColor(0, 53, 96);
-      doc.text('Seminarabschluss Schneesport Exkursion 2026', 14, 20);
-
-      doc.setFontSize(10);
-      doc.setTextColor(100);
-      var today = new Date().toLocaleDateString('de-DE');
-      doc.text('Datum: ' + today + '  |  Teilnehmer: ' + records.length, 14, 28);
-
-      doc.autoTable({
-        startY: 34,
-        head: [['Nachname', 'Vorname', 'Studienrichtung', 'Gruppe', 'Uni', 'Abschluss']],
-        body: records.map(function(r) {
-          var abschlussArr = toAbschlussArr(r.abschluss);
-          var abschlussDisplay = abschlussArr.map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ');
-          return [r.nachname || '', r.vorname || '', r.studienrichtung || '', r.gruppe || '', r.uni || '', abschlussDisplay];
-        }),
-        styles: { fontSize: 8, cellPadding: 2 },
-        headStyles: { fillColor: [0, 53, 96] }
+      // Anmeldungen
+      var data = records.map(function(r) {
+        var abschlussArr = toAbschlussArr(r.abschluss);
+        return {
+          'Nachname': r.nachname || '',
+          'Vorname': r.vorname || '',
+          'Studienrichtung': r.studienrichtung || '',
+          'Gruppe': r.gruppe || '',
+          'Uni': r.uni || '',
+          'Abschluss': abschlussArr.map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', '),
+          'Anmeldung': r.timestamp ? new Date(r.timestamp).toLocaleString('de-DE') : ''
+        };
       });
+      var ws = XLSX.utils.json_to_sheet(data);
+      ws['!cols'] = [{wch:16},{wch:14},{wch:28},{wch:10},{wch:6},{wch:30},{wch:18}];
+      XLSX.utils.book_append_sheet(wb, ws, 'Anmeldungen');
 
+      // Zusammenfassung
       var abschlussCount = {};
       records.forEach(function(r) {
-        var arr = toAbschlussArr(r.abschluss);
-        arr.forEach(function(a) {
+        toAbschlussArr(r.abschluss).forEach(function(a) {
           var label = ABSCHLUSS_LABELS[a] || a || 'Unbekannt';
           abschlussCount[label] = (abschlussCount[label] || 0) + 1;
         });
       });
-      var summaryBody = Object.keys(abschlussCount).map(function(label) { return [label, String(abschlussCount[label])]; });
-      summaryBody.push(['Gesamt', String(records.length)]);
-
-      doc.autoTable({
-        startY: doc.lastAutoTable.finalY + 10,
-        head: [['Abschluss', 'Anzahl']],
-        body: summaryBody,
-        styles: { fontSize: 9, cellPadding: 3 },
-        headStyles: { fillColor: [236, 99, 58] }
+      var summary = Object.keys(abschlussCount).map(function(label) {
+        return { 'Abschluss': label, 'Anzahl': abschlussCount[label] };
       });
+      summary.push({ 'Abschluss': 'Gesamt', 'Anzahl': records.length });
+      var ws2 = XLSX.utils.json_to_sheet(summary);
+      ws2['!cols'] = [{wch:24},{wch:8}];
+      XLSX.utils.book_append_sheet(wb, ws2, 'Zusammenfassung');
 
-      doc.save('seminarabschluss-schneesport-' + today.replace(/\./g, '-') + '.pdf');
+      var today = new Date().toLocaleDateString('de-DE').replace(/\./g, '-');
+      XLSX.writeFile(wb, 'seminarabschluss-schneesport-' + today + '.xlsx');
     }
 
     function loadScript(src) {
