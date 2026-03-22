@@ -376,7 +376,7 @@
   <main>
     <div class="intro-box">
       <p class="intro-heading">Worum geht es?</p>
-      <p class="intro-text">Hier meldet ihr euch <strong>verbindlich</strong> f&#x00FC;r euren Seminarabschluss an.<br>W&#x00E4;hlt zwischen Studienleistung und (Modul)Pr&#x00FC;fung &#x2014; optional k&#x00F6;nnt ihr zus&#x00E4;tzlich Lizenzen anmelden.</p>
+      <p class="intro-text">Hier meldet ihr euch <strong>verbindlich</strong> f&#x00FC;r euren Seminarabschluss an.<br>W&#x00E4;hlt zwischen Studienleistung und (Modul)Pr&#x00FC;fung. Zus&#x00E4;tzlich k&#x00F6;nnt ihr euch gesondert zum Lizenzerwerb anmelden.</p>
       <span class="intro-deadline">Anmeldeschluss (Modul)Pr&#x00FC;fung &amp; Lizenzen: 24.03.2026</span>
     </div>
 
@@ -493,7 +493,7 @@
             </div>
             <div class="abschluss-step">
               <span class="step-num">2</span>
-              <span>Optional: Lizenzerwerb zus&#x00E4;tzlich anmelden (inkl. MC-Klausur am 23.04.).</span>
+              <span>Optional: Gesondert zum Lizenzerwerb anmelden. Erfordert Teilnahme an allen Pr&#x00FC;fungsteilen + MC-Klausur am 23.04.</span>
             </div>
           </div>
           <div class="abschluss-warning">
@@ -520,7 +520,7 @@
             <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="lizenzen">
               <span class="option-text">
                 <span class="option-name">Lizenzen</span>
-                <span class="option-desc">Kurven + freie Abfahrt (benotet), Testate, MC-Klausur am 23.04. Anmeldung bis 24.03.<br>M&#x00F6;gliche Lizenzen: DSLV Level 1/Level 2, WSV/DSV Grundstufe 2, Zertifikat Schneesport an Schulen NRW.</span>
+                <span class="option-desc">Zus&#x00E4;tzlich zum Seminarabschluss. Alle Pr&#x00FC;fungsteile (Kurven, freie Abfahrt, Testate) + MC-Klausur am 23.04. Anmeldung bis 24.03.<br>M&#x00F6;gliche Lizenzen: DSLV Level 1/Level 2, WSV/DSV Grundstufe 2, Zertifikat Schneesport an Schulen NRW.</span>
               </span>
               <span class="check-circle"></span>
               <input type="checkbox" name="abschluss" value="lizenzen" hidden>
@@ -692,8 +692,12 @@
       var studienrichtungOk = document.querySelector('input[name="studienrichtung"]:checked');
       var gruppeOk = document.querySelector('input[name="gruppe"]:checked');
       var uniOk = document.querySelector('input[name="uni"]:checked');
-      var abschlussOk = document.querySelector('input[name="abschluss"]:checked');
-      var valid = vorname.length >= 2 && nachname.length >= 2 && studienrichtungOk && gruppeOk && uniOk && !!abschlussOk;
+      var abschlussChecked = document.querySelectorAll('input[name="abschluss"]:checked');
+      var hasBase = false;
+      abschlussChecked.forEach(function(el) {
+        if (el.value === 'studienleistung' || el.value === 'modulpruefung') hasBase = true;
+      });
+      var valid = vorname.length >= 2 && nachname.length >= 2 && studienrichtungOk && gruppeOk && uniOk && hasBase;
       document.getElementById('submit-btn').disabled = !valid;
     }
 
@@ -722,7 +726,7 @@
           checkField('studienrichtung', studienrichtung, 'Bitte Studienrichtung ausw\u00e4hlen.') |
           checkField('gruppe', gruppe, 'Bitte eine Gruppe ausw\u00e4hlen.') |
           checkField('uni', uni, 'Bitte eine Universit\u00e4t ausw\u00e4hlen.') |
-          checkField('abschluss', abschluss.length, 'Bitte mindestens einen Abschluss ausw\u00e4hlen.');
+          checkField('abschluss', abschluss.indexOf('studienleistung') !== -1 || abschluss.indexOf('modulpruefung') !== -1, 'Bitte Studienleistung oder (Modul)Pr\u00fcfung w\u00e4hlen.');
         if (hasError) return;
 
         saveToJsonBin({ vorname: vorname, nachname: nachname, studienrichtung: studienrichtung, gruppe: gruppe, uni: uni, abschluss: abschluss });
