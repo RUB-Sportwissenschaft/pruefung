@@ -147,6 +147,9 @@
 
     /* Abschluss-Optionen */
     .option-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .abschluss-divider { display: flex; align-items: center; gap: 0.75rem; margin: 0.5rem 0 0.25rem; }
+    .abschluss-divider::before, .abschluss-divider::after { content: ''; flex: 1; border-top: 1px solid #ccc; }
+    .abschluss-divider span { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
     .option-card {
       display: flex; align-items: center; gap: 0.75rem;
       padding: 0.85rem 1rem;
@@ -458,6 +461,7 @@
               <span class="check-circle"></span>
               <input type="checkbox" name="abschluss" value="modulpruefung" hidden>
             </div>
+            <div class="abschluss-divider"><span>&#x2795; Optional dazu w&#x00E4;hlbar</span></div>
             <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="lizenzen">
               <span class="option-text">
                 <span class="option-name">Lizenzen</span>
