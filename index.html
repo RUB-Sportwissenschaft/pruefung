@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prüfungsorganisation Valmorel</title>
+  <title>Anmeldung Seminarabschluss — Schneesport 2026</title>
   <style>
     @font-face {
       font-family: 'RubFlama';
@@ -128,26 +128,13 @@
       .uni-card:hover:not(.selected) { border-color: #ccc; box-shadow: var(--shadow-sm); }
     }
 
-    /* Prüfungsteil-Bestätigung */
-    .confirm-card {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 1rem;
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      cursor: pointer; background: var(--white);
-      transition: border-color 0.2s, background 0.2s;
-      user-select: none;
+    /* Abschluss-Hinweis */
+    .option-hint {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
     }
-    .confirm-card .check-box {
-      width: 24px; height: 24px;
-      border: 2px solid var(--border); border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, border-color 0.2s; flex-shrink: 0;
-    }
-    .confirm-card.selected .check-box { background: var(--orange); border-color: var(--orange); }
-    .confirm-card.selected .check-box::after { content: '\2713'; color: var(--white); font-size: 0.9rem; font-weight: 700; }
-    .confirm-card.selected { border-color: var(--orange); background: var(--orange-light); }
-    .confirm-card .confirm-text { font-weight: 600; font-size: 0.95rem; }
 
     /* Abschluss-Optionen */
     .option-list { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -174,7 +161,6 @@
     .option-card.selected .check-circle { background: var(--orange); border-color: var(--orange); }
     .option-card.selected .check-circle::after { content: '\2713'; color: var(--white); font-size: 0.75rem; font-weight: 700; }
 
-    .section-hidden { display: none; }
     .option-card input[type="checkbox"] { display: none; pointer-events: none; }
 
     /* Intro-Text */
@@ -318,41 +304,24 @@
       font-size: 0.72rem; font-weight: 700; white-space: nowrap;
     }
     .chip-studienleistung { background: #dbeafe; color: #1e40af; }
-    .chip-lizenz { background: #ffedd5; color: #c2410c; }
-    .chip-schulzertifikat { background: #dcfce7; color: #15803d; }
-    .chip-zertifikat-schneesport { background: #ede9fe; color: #6d28d9; }
+    .chip-modulpruefung { background: #fff3e0; color: #e65100; }
+    .chip-lizenzen { background: #ede9fe; color: #6d28d9; }
   </style>
 </head>
 <body>
 
   <header>
     <div class="header-icon">&#x1F4CB;</div>
-    <h1>Abfrage zur Prüfungsorganisation</h1>
+    <h1>Anmeldung Seminarabschluss / Pr&#x00FC;fung Schneesport Exkursion 2026</h1>
   </header>
   <div class="accent-bar"></div>
 
   <main>
     <div class="intro-box">
-      <p class="intro-text">Bestätigt zunächst eure Prüfungsteilnahme — danach öffnen sich die weiteren Felder. Gebt euren Namen, eure Gruppe und eure Hochschule an und wählt abschließend den Abschluss, den ihr anstrebt. [Platzhalter – genauer Text folgt.]</p>
+      <p class="intro-text">Bitte gebt euren Namen, eure Studienrichtung, Gruppe und Hochschule an und w&#x00E4;hlt den angestrebten Abschluss. Anmeldeschluss f&#x00FC;r (Modul)Pr&#x00FC;fung und Lizenzen: 24.03.2026.</p>
     </div>
 
     <form id="umfrage-form" novalidate>
-
-      <!-- Prüfungsteilnahme — zuerst -->
-      <div class="form-section">
-        <fieldset>
-          <legend>&#x2705; Prüfungsteilnahme <span class="req">*</span></legend>
-          <div class="confirm-card" role="checkbox" aria-checked="false" tabindex="0" id="pruefung-confirm">
-            <span class="check-box"></span>
-            <span class="confirm-text">Ich nehme an der freien Abfahrt teil</span>
-            <input type="checkbox" name="pruefung" value="freie-abfahrt" hidden>
-          </div>
-          <span class="error-msg" id="pruefung-error"></span>
-        </fieldset>
-      </div>
-
-      <!-- Rest des Formulars: nur sichtbar nach Bestätigung -->
-      <div id="details-section" class="section-hidden">
 
       <!-- Name -->
       <div class="form-section">
@@ -366,6 +335,55 @@
           <input type="text" id="nachname" name="nachname" autocomplete="family-name" placeholder="Dein Nachname">
           <span class="error-msg" id="nachname-error"></span>
         </div>
+      </div>
+
+      <!-- Universität -->
+      <div class="form-section">
+        <fieldset>
+          <legend>&#x1F3EB; Universit&#x00E4;t <span class="req">*</span></legend>
+          <div class="uni-grid">
+            <div class="uni-card" role="radio" aria-checked="false" tabindex="0" data-uni="RUB">
+              <img src="img/sportwiss.png" alt="Fakult&#x00E4;t f&#x00FC;r Sportwissenschaft, RUB">
+              <input type="radio" name="uni" value="RUB" hidden>
+            </div>
+            <div class="uni-card" role="radio" aria-checked="false" tabindex="0" data-uni="TU">
+              <img src="img/tu-dortmund.png" alt="TU Dortmund">
+              <input type="radio" name="uni" value="TU" hidden>
+            </div>
+          </div>
+          <span class="error-msg" id="uni-error"></span>
+        </fieldset>
+      </div>
+
+      <!-- Studienrichtung -->
+      <div class="form-section">
+        <fieldset>
+          <legend>&#x1F4DA; Studienrichtung <span class="req">*</span></legend>
+          <div class="option-list">
+            <div class="option-card" role="radio" aria-checked="false" tabindex="0" data-studienrichtung="Sportwissenschaft B.Sc.">
+              <span class="option-text">
+                <span class="option-name">Sportwissenschaft B.Sc.</span>
+              </span>
+              <span class="check-circle"></span>
+              <input type="radio" name="studienrichtung" value="Sportwissenschaft B.Sc." hidden>
+            </div>
+            <div class="option-card" role="radio" aria-checked="false" tabindex="0" data-studienrichtung="Sportwissenschaft B.A. (2 F&#x00E4;cher)">
+              <span class="option-text">
+                <span class="option-name">Sportwissenschaft B.A. (2 F&#x00E4;cher)</span>
+              </span>
+              <span class="check-circle"></span>
+              <input type="radio" name="studienrichtung" value="Sportwissenschaft B.A. (2 F&#x00E4;cher)" hidden>
+            </div>
+            <div class="option-card" role="radio" aria-checked="false" tabindex="0" data-studienrichtung="Master of Education">
+              <span class="option-text">
+                <span class="option-name">Master of Education</span>
+              </span>
+              <span class="check-circle"></span>
+              <input type="radio" name="studienrichtung" value="Master of Education" hidden>
+            </div>
+          </div>
+          <span class="error-msg" id="studienrichtung-error"></span>
+        </fieldset>
       </div>
 
       <!-- Gruppe -->
@@ -405,60 +423,35 @@
         </fieldset>
       </div>
 
-      <!-- Universität -->
-      <div class="form-section">
-        <fieldset>
-          <legend>&#x1F3EB; Universität <span class="req">*</span></legend>
-          <div class="uni-grid">
-            <div class="uni-card" role="radio" aria-checked="false" tabindex="0" data-uni="RUB">
-              <img src="img/sportwiss.png" alt="Fakultät für Sportwissenschaft, RUB">
-              <input type="radio" name="uni" value="RUB" hidden>
-            </div>
-            <div class="uni-card" role="radio" aria-checked="false" tabindex="0" data-uni="TU">
-              <img src="img/tu-dortmund.png" alt="TU Dortmund">
-              <input type="radio" name="uni" value="TU" hidden>
-            </div>
-          </div>
-          <span class="error-msg" id="uni-error"></span>
-        </fieldset>
-      </div>
-
       <!-- Abschluss -->
       <div class="form-section" id="abschluss-section">
         <fieldset>
           <legend>&#x1F393; Angestrebter Abschluss <span class="req">*</span></legend>
+          <p class="option-hint">W&#x00E4;hlt zun&#x00E4;chst euren Seminarabschluss: Studienleistung (unbenotet) oder (Modul)Pr&#x00FC;fung (benotet). Wer die (Modul)Pr&#x00FC;fung w&#x00E4;hlt, nimmt verpflichtend an der freien Abfahrt teil &#x2014; die Anmeldung ist verbindlich. Zus&#x00E4;tzlich k&#x00F6;nnt ihr den Lizenzerwerb anmelden &#x2014; dieser ist mit beiden Abschl&#x00FC;ssen kombinierbar.</p>
           <div class="option-list">
             <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="studienleistung">
               <span class="option-text">
                 <span class="option-name">Studienleistung</span>
-                <span class="option-desc">Beschreibung folgt</span>
+                <span class="option-desc">Kleine und mittelgro&#x00DF;e Kurven (unbenotet), Testate. Inkl. Bescheinigung Schneesport Schule.</span>
               </span>
               <span class="check-circle"></span>
               <input type="checkbox" name="abschluss" value="studienleistung" hidden>
             </div>
-            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="lizenz">
+            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="modulpruefung" id="modulpruefung-card">
               <span class="option-text">
-                <span class="option-name">Lizenz</span>
-                <span class="option-desc">Beschreibung folgt</span>
+                <span class="option-name" id="modulpruefung-label">(Modul)Pr&#x00FC;fung</span>
+                <span class="option-desc">Kleine und mittelgro&#x00DF;e Kurven + freie Abfahrt (benotet), Testate. Inkl. Bescheinigung Schneesport Schule. Anmeldung bis 24.03. &#x2014; verbindlich!</span>
               </span>
               <span class="check-circle"></span>
-              <input type="checkbox" name="abschluss" value="lizenz" hidden>
+              <input type="checkbox" name="abschluss" value="modulpruefung" hidden>
             </div>
-            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="schulzertifikat">
+            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="lizenzen">
               <span class="option-text">
-                <span class="option-name">Schulzertifikat</span>
-                <span class="option-desc">Beschreibung folgt</span>
+                <span class="option-name">Lizenzen</span>
+                <span class="option-desc">Kurven + freie Abfahrt (benotet), Testate, MC-Klausur am 23.04. Anmeldung bis 24.03.</span>
               </span>
               <span class="check-circle"></span>
-              <input type="checkbox" name="abschluss" value="schulzertifikat" hidden>
-            </div>
-            <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="zertifikat-schneesport">
-              <span class="option-text">
-                <span class="option-name">Zertifikat Schneesport an Schulen</span>
-                <span class="option-desc">Beschreibung folgt</span>
-              </span>
-              <span class="check-circle"></span>
-              <input type="checkbox" name="abschluss" value="zertifikat-schneesport" hidden>
+              <input type="checkbox" name="abschluss" value="lizenzen" hidden>
             </div>
           </div>
           <span class="error-msg" id="abschluss-error"></span>
@@ -467,17 +460,15 @@
 
       <div class="submit-area">
         <span class="error-msg" id="network-error"></span>
-        <button type="submit" id="submit-btn" disabled>Absenden</button>
+        <button type="submit" id="submit-btn" disabled>Anmelden</button>
       </div>
-
-      </div><!-- /details-section -->
 
     </form>
 
     <div id="confirmation" style="display:none">
       <div class="conf-icon">&#x2705;</div>
       <p id="confirmation-text"></p>
-      <p class="conf-sub">Deine Angaben wurden gespeichert.</p>
+      <p class="conf-sub">Deine Anmeldung wurde gespeichert.</p>
       <div id="confirmation-choice"></div>
     </div>
 
@@ -490,7 +481,7 @@
 
   <div id="admin-view">
     <div class="admin-header">
-      <h2>&#x1F4CB; Prüfungsorganisation &mdash; Admin</h2>
+      <h2>&#x1F4CB; Seminarabschluss Schneesport &mdash; Admin</h2>
       <button class="btn-pdf" id="pdf-btn" hidden>&#x2B73; PDF</button>
     </div>
     <p id="admin-loading" style="padding:1rem 1.25rem">Daten werden geladen&hellip;</p>
@@ -505,6 +496,7 @@
         <thead><tr>
           <th data-col="nachname">Nachname</th>
           <th data-col="vorname">Vorname</th>
+          <th data-col="studienrichtung">Studienrichtung</th>
           <th data-col="uni">Uni</th>
           <th data-col="abschluss">Angestrebter Abschluss</th>
           <th style="width:80px"></th>
@@ -525,9 +517,8 @@
 
     var ABSCHLUSS_LABELS = {
       'studienleistung': 'Studienleistung',
-      'lizenz': 'Lizenz',
-      'schulzertifikat': 'Schulzertifikat',
-      'zertifikat-schneesport': 'Zertifikat Schneesport an Schulen'
+      'modulpruefung': '(Modul)Pr\u00fcfung',
+      'lizenzen': 'Lizenzen'
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -570,6 +561,7 @@
           card.classList.add('selected');
           card.setAttribute('aria-checked', 'true');
           card.querySelector('input[type="radio"]').checked = true;
+          updateModulLabel(card.dataset.uni);
           validateForm();
         });
         card.addEventListener('keydown', function(e) {
@@ -577,46 +569,49 @@
         });
       });
 
-      // Prüfungsteil-Bestätigung
-      var confirmCard = document.getElementById('pruefung-confirm');
-      confirmCard.addEventListener('click', function() {
-        var cb = confirmCard.querySelector('input[type="checkbox"]');
-        var isChecked = cb.checked;
-        cb.checked = !isChecked;
-        confirmCard.classList.toggle('selected', !isChecked);
-        confirmCard.setAttribute('aria-checked', String(!isChecked));
-
-        var detailsSection = document.getElementById('details-section');
-        if (!isChecked) {
-          detailsSection.classList.remove('section-hidden');
-        } else {
-          detailsSection.classList.add('section-hidden');
-          // Alle Felder zurücksetzen
-          document.getElementById('vorname').value = '';
-          document.getElementById('nachname').value = '';
-          document.querySelectorAll('.card, .uni-card, .option-card').forEach(function(c) {
+      // Studienrichtung-Kacheln (Radio)
+      document.querySelectorAll('.option-card[data-studienrichtung]').forEach(function(card) {
+        card.addEventListener('click', function() {
+          document.querySelectorAll('.option-card[data-studienrichtung]').forEach(function(c) {
             c.classList.remove('selected');
             c.setAttribute('aria-checked', 'false');
           });
-          document.querySelectorAll('input[type="radio"], input[type="checkbox"][name="abschluss"]').forEach(function(r) { r.checked = false; });
-        }
-        validateForm();
-      });
-      confirmCard.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); confirmCard.click(); }
+          card.classList.add('selected');
+          card.setAttribute('aria-checked', 'true');
+          card.querySelector('input[type="radio"]').checked = true;
+          validateForm();
+        });
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+        });
       });
 
-      // Abschluss-Kacheln (Mehrfachauswahl)
-      document.querySelectorAll('.option-card').forEach(function(card) {
+      // Abschluss-Kacheln (Studienleistung/Modulpr\u00fcfung exklusiv, Lizenzen unabh\u00e4ngig)
+      var exclusiveAbschluss = ['studienleistung', 'modulpruefung'];
+      document.querySelectorAll('.option-card[data-abschluss]').forEach(function(card) {
         card.addEventListener('click', function(e) {
           e.stopPropagation();
           var cb = card.querySelector('input[type="checkbox"]');
           var isSelected = card.classList.contains('selected');
+          var abschluss = card.dataset.abschluss;
+          var isExclusive = exclusiveAbschluss.indexOf(abschluss) !== -1;
+
           if (isSelected) {
             card.classList.remove('selected');
             card.setAttribute('aria-checked', 'false');
             cb.checked = false;
           } else {
+            // Bei exklusiven Optionen: die andere abw\u00e4hlen
+            if (isExclusive) {
+              exclusiveAbschluss.forEach(function(key) {
+                if (key !== abschluss) {
+                  var other = document.querySelector('.option-card[data-abschluss="' + key + '"]');
+                  other.classList.remove('selected');
+                  other.setAttribute('aria-checked', 'false');
+                  other.querySelector('input[type="checkbox"]').checked = false;
+                }
+              });
+            }
             card.classList.add('selected');
             card.setAttribute('aria-checked', 'true');
             cb.checked = true;
@@ -637,11 +632,11 @@
     function validateForm() {
       var vorname = document.getElementById('vorname').value.trim();
       var nachname = document.getElementById('nachname').value.trim();
+      var studienrichtungOk = document.querySelector('input[name="studienrichtung"]:checked');
       var gruppeOk = document.querySelector('input[name="gruppe"]:checked');
       var uniOk = document.querySelector('input[name="uni"]:checked');
-      var pruefungOk = document.querySelector('input[name="pruefung"]').checked;
       var abschlussOk = document.querySelector('input[name="abschluss"]:checked');
-      var valid = vorname.length >= 2 && nachname.length >= 2 && gruppeOk && uniOk && pruefungOk && !!abschlussOk;
+      var valid = vorname.length >= 2 && nachname.length >= 2 && studienrichtungOk && gruppeOk && uniOk && !!abschlussOk;
       document.getElementById('submit-btn').disabled = !valid;
     }
 
@@ -650,14 +645,14 @@
         e.preventDefault();
         var vorname = document.getElementById('vorname').value.trim();
         var nachname = document.getElementById('nachname').value.trim();
+        var studienrichtungEl = document.querySelector('input[name="studienrichtung"]:checked');
         var gruppeEl = document.querySelector('input[name="gruppe"]:checked');
         var uniEl = document.querySelector('input[name="uni"]:checked');
-        var pruefungEl = document.querySelector('input[name="pruefung"]');
         var abschlussEls = document.querySelectorAll('input[name="abschluss"]:checked');
 
+        var studienrichtung = studienrichtungEl ? studienrichtungEl.value : null;
         var gruppe = gruppeEl ? gruppeEl.value : null;
         var uni = uniEl ? uniEl.value : null;
-        var pruefung = pruefungEl.checked ? 'Freie Abfahrt' : null;
         var abschluss = Array.from(abschlussEls).map(function(el) { return el.value; });
 
         var hasError = false;
@@ -665,17 +660,17 @@
         else { document.getElementById('vorname-error').textContent = ''; }
         if (nachname.length < 2) { document.getElementById('nachname-error').textContent = 'Bitte Nachname eingeben (mindestens 2 Zeichen).'; hasError = true; }
         else { document.getElementById('nachname-error').textContent = ''; }
+        if (!studienrichtung) { document.getElementById('studienrichtung-error').textContent = 'Bitte Studienrichtung ausw\u00e4hlen.'; hasError = true; }
+        else { document.getElementById('studienrichtung-error').textContent = ''; }
         if (!gruppe) { document.getElementById('gruppe-error').textContent = 'Bitte eine Gruppe ausw\u00e4hlen.'; hasError = true; }
         else { document.getElementById('gruppe-error').textContent = ''; }
         if (!uni) { document.getElementById('uni-error').textContent = 'Bitte eine Universit\u00e4t ausw\u00e4hlen.'; hasError = true; }
         else { document.getElementById('uni-error').textContent = ''; }
-        if (!pruefung) { document.getElementById('pruefung-error').textContent = 'Bitte Pr\u00fcfungsteilnahme best\u00e4tigen.'; hasError = true; }
-        else { document.getElementById('pruefung-error').textContent = ''; }
         if (!abschluss.length) { document.getElementById('abschluss-error').textContent = 'Bitte mindestens einen Abschluss ausw\u00e4hlen.'; hasError = true; }
         else { document.getElementById('abschluss-error').textContent = ''; }
         if (hasError) return;
 
-        saveToJsonBin({ vorname: vorname, nachname: nachname, gruppe: gruppe, uni: uni, pruefung: pruefung, abschluss: abschluss });
+        saveToJsonBin({ vorname: vorname, nachname: nachname, studienrichtung: studienrichtung, gruppe: gruppe, uni: uni, abschluss: abschluss });
       });
     }
 
@@ -683,7 +678,7 @@
       var btn = document.getElementById('submit-btn');
       var errEl = document.getElementById('network-error');
       btn.disabled = true;
-      btn.textContent = 'Wird gespeichert\u2026';
+      btn.textContent = 'Wird angemeldet\u2026';
       errEl.textContent = '';
 
       fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID + '/latest', {
@@ -712,7 +707,7 @@
       .catch(function() {
         errEl.textContent = 'Fehler beim Speichern. Bitte erneut versuchen.';
         btn.disabled = false;
-        btn.textContent = 'Absenden';
+        btn.textContent = 'Anmelden';
       });
     }
 
@@ -721,10 +716,19 @@
       document.getElementById('confirmation').style.display = 'block';
       document.getElementById('confirmation-text').textContent = 'Danke, ' + escHtml(data.vorname) + '!';
       document.getElementById('confirmation-choice').innerHTML =
+        '<p><span class="conf-label">Studienrichtung:</span> ' + escHtml(data.studienrichtung) + '</p>' +
         '<p><span class="conf-label">Gruppe:</span> ' + escHtml(data.gruppe) + '</p>' +
         '<p><span class="conf-label">Uni:</span> ' + escHtml(data.uni) + '</p>' +
-        '<p><span class="conf-label">Pr\u00fcfung:</span> ' + escHtml(data.pruefung) + '</p>' +
         '<p><span class="conf-label">Abschluss:</span> ' + escHtml((Array.isArray(data.abschluss) ? data.abschluss : [data.abschluss]).map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ')) + '</p>';
+    }
+
+    function updateModulLabel(uni) {
+      var label = document.getElementById('modulpruefung-label');
+      if (uni === 'RUB') {
+        label.textContent = 'Modulpr\u00fcfung M4 (Praxis)';
+      } else if (uni === 'TU') {
+        label.textContent = 'Modulpr\u00fcfung Natursport';
+      }
     }
 
     function initAdmin() {
@@ -758,9 +762,8 @@
 
     var ABSCHLUSS_CHIP_CLASS = {
       'studienleistung': 'chip-studienleistung',
-      'lizenz': 'chip-lizenz',
-      'schulzertifikat': 'chip-schulzertifikat',
-      'zertifikat-schneesport': 'chip-zertifikat-schneesport'
+      'modulpruefung': 'chip-modulpruefung',
+      'lizenzen': 'chip-lizenzen'
     };
 
     function renderAbschlussChips(abschluss) {
@@ -787,6 +790,7 @@
         return '<tr>' +
           '<td>' + escHtml(r.nachname || '') + '</td>' +
           '<td>' + escHtml(r.vorname || '') + '</td>' +
+          '<td>' + escHtml(r.studienrichtung || '') + '</td>' +
           '<td>' + escHtml(r.uni || '') + '</td>' +
           '<td>' + renderAbschlussChips(r.abschluss) + '</td>' +
           '<td><button class="btn-del" data-ts="' + escHtml(r.timestamp || '') + '">L\u00f6schen</button></td>' +
@@ -878,7 +882,7 @@
 
       doc.setFontSize(16);
       doc.setTextColor(0, 53, 96);
-      doc.text('Pruefungsorganisation Valmorel', 14, 20);
+      doc.text('Seminarabschluss Schneesport Exkursion 2026', 14, 20);
 
       doc.setFontSize(10);
       doc.setTextColor(100);
@@ -887,11 +891,11 @@
 
       doc.autoTable({
         startY: 34,
-        head: [['Nachname', 'Vorname', 'Gruppe', 'Uni', 'Pruefung', 'Abschluss']],
+        head: [['Nachname', 'Vorname', 'Studienrichtung', 'Gruppe', 'Uni', 'Abschluss']],
         body: records.map(function(r) {
           var abschlussArr = Array.isArray(r.abschluss) ? r.abschluss : (r.abschluss ? [r.abschluss] : []);
           var abschlussDisplay = abschlussArr.map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ');
-          return [r.nachname || '', r.vorname || '', r.gruppe || '', r.uni || '', r.pruefung || '', abschlussDisplay];
+          return [r.nachname || '', r.vorname || '', r.studienrichtung || '', r.gruppe || '', r.uni || '', abschlussDisplay];
         }),
         styles: { fontSize: 8, cellPadding: 2 },
         headStyles: { fillColor: [0, 53, 96] }
@@ -916,7 +920,7 @@
         headStyles: { fillColor: [236, 99, 58] }
       });
 
-      doc.save('pruefungsorganisation-valmorel-' + today.replace(/\./g, '-') + '.pdf');
+      doc.save('seminarabschluss-schneesport-' + today.replace(/\./g, '-') + '.pdf');
     }
 
     function loadScript(src) {
