@@ -546,6 +546,16 @@
       initAdmin();
     });
 
+    function jsonbinFetch(method, body) {
+      var url = 'https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID + (method === 'GET' ? '/latest' : '');
+      var opts = { method: method, headers: { 'X-Master-Key': JSONBIN_API_KEY } };
+      if (body !== undefined) {
+        opts.headers['Content-Type'] = 'application/json';
+        opts.body = JSON.stringify(body);
+      }
+      return fetch(url, opts);
+    }
+
     function initRadioCards(selector, onSelect) {
       document.querySelectorAll(selector).forEach(function(card) {
         card.addEventListener('click', function() {
@@ -643,19 +653,17 @@
         var uni = uniEl ? uniEl.value : null;
         var abschluss = Array.from(abschlussEls).map(function(el) { return el.value; });
 
-        var hasError = false;
-        if (vorname.length < 2) { document.getElementById('vorname-error').textContent = 'Bitte Vorname eingeben (mindestens 2 Zeichen).'; hasError = true; }
-        else { document.getElementById('vorname-error').textContent = ''; }
-        if (nachname.length < 2) { document.getElementById('nachname-error').textContent = 'Bitte Nachname eingeben (mindestens 2 Zeichen).'; hasError = true; }
-        else { document.getElementById('nachname-error').textContent = ''; }
-        if (!studienrichtung) { document.getElementById('studienrichtung-error').textContent = 'Bitte Studienrichtung ausw\u00e4hlen.'; hasError = true; }
-        else { document.getElementById('studienrichtung-error').textContent = ''; }
-        if (!gruppe) { document.getElementById('gruppe-error').textContent = 'Bitte eine Gruppe ausw\u00e4hlen.'; hasError = true; }
-        else { document.getElementById('gruppe-error').textContent = ''; }
-        if (!uni) { document.getElementById('uni-error').textContent = 'Bitte eine Universit\u00e4t ausw\u00e4hlen.'; hasError = true; }
-        else { document.getElementById('uni-error').textContent = ''; }
-        if (!abschluss.length) { document.getElementById('abschluss-error').textContent = 'Bitte mindestens einen Abschluss ausw\u00e4hlen.'; hasError = true; }
-        else { document.getElementById('abschluss-error').textContent = ''; }
+        function checkField(id, condition, msg) {
+          document.getElementById(id + '-error').textContent = condition ? '' : msg;
+          return !condition;
+        }
+        var hasError =
+          checkField('vorname', vorname.length >= 2, 'Bitte Vorname eingeben (mindestens 2 Zeichen).') |
+          checkField('nachname', nachname.length >= 2, 'Bitte Nachname eingeben (mindestens 2 Zeichen).') |
+          checkField('studienrichtung', studienrichtung, 'Bitte Studienrichtung ausw\u00e4hlen.') |
+          checkField('gruppe', gruppe, 'Bitte eine Gruppe ausw\u00e4hlen.') |
+          checkField('uni', uni, 'Bitte eine Universit\u00e4t ausw\u00e4hlen.') |
+          checkField('abschluss', abschluss.length, 'Bitte mindestens einen Abschluss ausw\u00e4hlen.');
         if (hasError) return;
 
         saveToJsonBin({ vorname: vorname, nachname: nachname, studienrichtung: studienrichtung, gruppe: gruppe, uni: uni, abschluss: abschluss });
@@ -669,9 +677,7 @@
       btn.textContent = 'Wird angemeldet\u2026';
       errEl.textContent = '';
 
-      fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID + '/latest', {
-        headers: { 'X-Master-Key': JSONBIN_API_KEY }
-      })
+      jsonbinFetch('GET')
       .then(function(res) {
         if (!res.ok) throw new Error('Laden fehlgeschlagen');
         return res.json();
@@ -681,11 +687,7 @@
         records = records.filter(function(r) { return !r._init; });
         antwort.timestamp = new Date().toISOString();
         records.push(antwort);
-        return fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
-          body: JSON.stringify(records)
-        });
+        return jsonbinFetch('PUT', records);
       })
       .then(function(putRes) {
         if (!putRes.ok) throw new Error('Speichern fehlgeschlagen');
@@ -728,9 +730,7 @@
     }
 
     function loadAdminData() {
-      fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID + '/latest', {
-        headers: { 'X-Master-Key': JSONBIN_API_KEY }
-      })
+      jsonbinFetch('GET')
       .then(function(res) {
         if (!res.ok) throw new Error('Laden fehlgeschlagen');
         return res.json();
@@ -746,6 +746,17 @@
         errEl.hidden = false;
         errEl.textContent = 'Fehler beim Laden: ' + err.message;
       });
+    }
+
+    function countAbschluss(records) {
+      var count = {};
+      records.forEach(function(r) {
+        toAbschlussArr(r.abschluss).forEach(function(a) {
+          var label = ABSCHLUSS_LABELS[a] || a || 'Unbekannt';
+          count[label] = (count[label] || 0) + 1;
+        });
+      });
+      return count;
     }
 
     var ABSCHLUSS_CHIP_CLASS = {
@@ -804,14 +815,7 @@
       // Stats
       var stats = document.getElementById('admin-stats');
       stats.hidden = false;
-      var abschlussCount = {};
-      records.forEach(function(r) {
-        var arr = toAbschlussArr(r.abschluss);
-        arr.forEach(function(a) {
-          var label = ABSCHLUSS_LABELS[a] || a || 'Unbekannt';
-          abschlussCount[label] = (abschlussCount[label] || 0) + 1;
-        });
-      });
+      var abschlussCount = countAbschluss(records);
       var statsHtml = '<span class="stat-chip total">Gesamt: ' + records.length + '</span>';
       Object.keys(abschlussCount).forEach(function(label) {
         statsHtml += '<span class="stat-chip">' + escHtml(label) + ': ' + abschlussCount[label] + '</span>';
@@ -836,11 +840,7 @@
     function deleteRecord(timestamp) {
       if (!confirm('Eintrag wirklich l\u00f6schen?')) return;
       window._adminRecords = window._adminRecords.filter(function(r) { return r.timestamp !== timestamp; });
-      fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
-        body: JSON.stringify(window._adminRecords)
-      })
+      jsonbinFetch('PUT', window._adminRecords)
       .then(function(res) {
         if (!res.ok) throw new Error('Fehler');
         renderAdminTable('nachname', 'asc');
@@ -882,13 +882,7 @@
       XLSX.utils.book_append_sheet(wb, ws, 'Anmeldungen');
 
       // Zusammenfassung
-      var abschlussCount = {};
-      records.forEach(function(r) {
-        toAbschlussArr(r.abschluss).forEach(function(a) {
-          var label = ABSCHLUSS_LABELS[a] || a || 'Unbekannt';
-          abschlussCount[label] = (abschlussCount[label] || 0) + 1;
-        });
-      });
+      var abschlussCount = countAbschluss(records);
       var summary = Object.keys(abschlussCount).map(function(label) {
         return { 'Abschluss': label, 'Anzahl': abschlussCount[label] };
       });
