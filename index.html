@@ -128,13 +128,22 @@
       .uni-card:hover:not(.selected) { border-color: #ccc; box-shadow: var(--shadow-sm); }
     }
 
-    /* Abschluss-Hinweis */
+    /* Hinweistexte */
     .option-hint {
       font-size: 0.85rem;
       line-height: 1.5;
       color: var(--text-muted);
       margin-bottom: 0.75rem;
     }
+    .option-hint-list {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      padding-left: 1.25rem;
+    }
+    .option-hint-list li { margin-bottom: 0.3rem; }
+    .option-hint-list strong { color: var(--text); }
 
     /* Abschluss-Optionen */
     .option-list { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -318,7 +327,7 @@
 
   <main>
     <div class="intro-box">
-      <p class="intro-text">Bitte gebt euren Namen, eure Studienrichtung, Gruppe und Hochschule an und w&#x00E4;hlt den angestrebten Abschluss. Anmeldeschluss f&#x00FC;r (Modul)Pr&#x00FC;fung und Lizenzen: 24.03.2026.</p>
+      <p class="intro-text">Bitte gebt euren Namen, eure Studienrichtung, Gruppe und Hochschule an und w&#x00E4;hlt den angestrebten Abschluss.<br><strong>Anmeldeschluss f&#x00FC;r (Modul)Pr&#x00FC;fung und Lizenzen: 24.03.2026.</strong></p>
     </div>
 
     <form id="umfrage-form" novalidate>
@@ -390,6 +399,7 @@
       <div class="form-section">
         <fieldset>
           <legend>&#x26F7; Gruppe <span class="req">*</span></legend>
+          <p class="option-hint">Eure Gruppeneinteilung findet ihr im Moodle-Kurs.</p>
           <div class="card-grid">
             <div class="card" role="radio" aria-checked="false" tabindex="0" data-group="1">
               1<input type="radio" name="gruppe" value="1" hidden>
@@ -427,7 +437,10 @@
       <div class="form-section" id="abschluss-section">
         <fieldset>
           <legend>&#x1F393; Angestrebter Abschluss <span class="req">*</span></legend>
-          <p class="option-hint">W&#x00E4;hlt zun&#x00E4;chst euren Seminarabschluss: Studienleistung (unbenotet) oder (Modul)Pr&#x00FC;fung (benotet). Wer die (Modul)Pr&#x00FC;fung w&#x00E4;hlt, nimmt verpflichtend an der freien Abfahrt teil &#x2014; die Anmeldung ist verbindlich. Zus&#x00E4;tzlich k&#x00F6;nnt ihr den Lizenzerwerb anmelden &#x2014; dieser ist mit beiden Abschl&#x00FC;ssen kombinierbar.</p>
+          <ol class="option-hint-list">
+            <li>W&#x00E4;hlt <strong>einen</strong> Seminarabschluss: Studienleistung (unbenotet) oder (Modul)Pr&#x00FC;fung (benotet, inkl. freie Abfahrt &#x2014; <strong>verbindlich!</strong>)</li>
+            <li>Optional: Lizenzerwerb zus&#x00E4;tzlich anmelden (inkl. MC-Klausur am 23.04.)</li>
+          </ol>
           <div class="option-list">
             <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="studienleistung">
               <span class="option-text">
