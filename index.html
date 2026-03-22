@@ -66,13 +66,13 @@
     .form-section {
       background: var(--white);
       border-radius: var(--radius);
-      padding: 1.25rem;
-      margin-bottom: 1rem;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.65rem;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border);
     }
-    fieldset { border: none; }
-    legend { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    fieldset { border: none; margin: 0; padding: 0; }
+    legend { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
     label { display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.95rem; }
     .req { color: var(--orange); }
     input[type="text"] {
@@ -86,8 +86,9 @@
       transition: border-color 0.2s;
     }
     input[type="text"]:focus { outline: none; border-color: var(--orange); background: var(--white); }
-    .field-group { margin-bottom: 0.75rem; }
-    .error-msg { display: block; min-height: 1.1em; font-size: 0.82rem; color: #dc2626; margin-top: 0.2rem; }
+    .field-group { margin-bottom: 0.5rem; }
+    .error-msg { display: block; min-height: 0; font-size: 0.82rem; color: #dc2626; margin-top: 0; }
+    .error-msg:not(:empty) { margin-top: 0.2rem; min-height: 1.1em; }
 
     /* Gruppen-Kacheln */
     .card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
@@ -115,14 +116,14 @@
     .uni-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
     .uni-card {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 1.25rem 0.75rem;
+      padding: 0.75rem 0.5rem;
       border: 2px solid var(--border);
       border-radius: var(--radius);
       cursor: pointer; background: var(--white);
       transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
       user-select: none;
     }
-    .uni-card img { max-height: 60px; max-width: 100%; object-fit: contain; }
+    .uni-card img { max-height: 48px; max-width: 100%; object-fit: contain; }
     .uni-card.selected { border-color: var(--orange); background: var(--orange-light); box-shadow: var(--shadow); }
     @media (hover: hover) {
       .uni-card:hover:not(.selected) { border-color: #ccc; box-shadow: var(--shadow-sm); }
@@ -135,15 +136,35 @@
       color: var(--text-muted);
       margin-bottom: 0.75rem;
     }
-    .option-hint-list {
+    .abschluss-steps {
       font-size: 0.85rem;
-      line-height: 1.6;
+      line-height: 1.5;
       color: var(--text-muted);
-      margin-bottom: 0.75rem;
-      padding-left: 1.25rem;
+      margin-bottom: 0.6rem;
     }
-    .option-hint-list li { margin-bottom: 0.3rem; }
-    .option-hint-list strong { color: var(--text); }
+    .abschluss-step {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 1.4em; height: 1.4em;
+      background: var(--orange); color: var(--white);
+      border-radius: 50%; font-size: 0.75rem; font-weight: 700;
+      flex-shrink: 0; margin-top: 0.1em;
+    }
+    .abschluss-steps strong { color: var(--text); }
+    .abschluss-warning {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #92400e;
+      background: #fffbeb;
+      border-left: 3px solid #f59e0b;
+      padding: 0.4rem 0.6rem;
+      margin-bottom: 0.6rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
 
     /* Abschluss-Optionen */
     .option-list { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -177,16 +198,40 @@
 
     /* Intro-Text */
     .intro-box {
-      background: var(--blau-light);
-      border-left: 4px solid var(--blau);
-      border-radius: var(--radius-sm);
-      padding: 1rem 1.1rem;
-      margin-bottom: 1rem;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.65rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+    }
+    .intro-heading {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--blau);
+      margin-bottom: 0.35rem;
     }
     .intro-text {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--text);
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .intro-deadline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #92400e;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 4px;
+      padding: 0.3rem 0.6rem;
+    }
+    .intro-deadline::before {
+      content: '\26A0';
+      font-size: 0.85rem;
     }
 
     /* Submit */
@@ -330,7 +375,9 @@
 
   <main>
     <div class="intro-box">
-      <p class="intro-text">Bitte gebt euren Namen, eure Studienrichtung, Gruppe und Hochschule an und w&#x00E4;hlt den angestrebten Abschluss.<br><strong>Anmeldeschluss f&#x00FC;r (Modul)Pr&#x00FC;fung und Lizenzen: 24.03.2026.</strong></p>
+      <p class="intro-heading">Worum geht es?</p>
+      <p class="intro-text">Hier meldet ihr euch <strong>verbindlich</strong> f&#x00FC;r euren Seminarabschluss an.<br>W&#x00E4;hlt zwischen Studienleistung und (Modul)Pr&#x00FC;fung &#x2014; optional k&#x00F6;nnt ihr zus&#x00E4;tzlich Lizenzen anmelden.</p>
+      <span class="intro-deadline">Anmeldeschluss (Modul)Pr&#x00FC;fung &amp; Lizenzen: 24.03.2026</span>
     </div>
 
     <form id="umfrage-form" novalidate>
@@ -401,8 +448,7 @@
       <!-- Gruppe -->
       <div class="form-section">
         <fieldset>
-          <legend>&#x26F7; Gruppe <span class="req">*</span></legend>
-          <p class="option-hint">Praxisgruppen der Exkursion</p>
+          <legend>&#x26F7; Praxisgruppe der Exkursion <span class="req">*</span></legend>
           <div class="card-grid">
             <div class="card" role="radio" aria-checked="false" tabindex="0" data-group="1">
               1<input type="radio" name="gruppe" value="1" hidden>
@@ -440,10 +486,19 @@
       <div class="form-section" id="abschluss-section">
         <fieldset>
           <legend>&#x1F393; Angestrebter Abschluss <span class="req">*</span></legend>
-          <ol class="option-hint-list">
-            <li>W&#x00E4;hlt <strong>einen</strong> Seminarabschluss: Studienleistung (unbenotet) oder (Modul)Pr&#x00FC;fung (benotet, inkl. freie Abfahrt &#x2014; <strong>verbindlich!</strong>)</li>
-            <li>Optional: Lizenzerwerb zus&#x00E4;tzlich anmelden (inkl. MC-Klausur am 23.04.). <strong>Achtung:</strong> Auch bei Studienleistung erfordert der Lizenzerwerb eine benotete freie Abfahrt!</li>
-          </ol>
+          <div class="abschluss-steps">
+            <div class="abschluss-step">
+              <span class="step-num">1</span>
+              <span>W&#x00E4;hlt <strong>einen</strong> Seminarabschluss: Studienleistung (unbenotet) oder (Modul)Pr&#x00FC;fung (benotet, inkl. freie Abfahrt &#x2014; <strong>verbindlich!</strong>)</span>
+            </div>
+            <div class="abschluss-step">
+              <span class="step-num">2</span>
+              <span>Optional: Lizenzerwerb zus&#x00E4;tzlich anmelden (inkl. MC-Klausur am 23.04.).</span>
+            </div>
+          </div>
+          <div class="abschluss-warning">
+            <strong>Achtung:</strong> Auch bei Studienleistung erfordert der Lizenzerwerb eine benotete freie Abfahrt!
+          </div>
           <div class="option-list">
             <div class="option-card" role="checkbox" aria-checked="false" tabindex="0" data-abschluss="studienleistung">
               <span class="option-text">
