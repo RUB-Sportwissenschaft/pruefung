@@ -533,58 +533,33 @@
       initAdmin();
     });
 
+    function initRadioCards(selector, onSelect) {
+      document.querySelectorAll(selector).forEach(function(card) {
+        card.addEventListener('click', function() {
+          document.querySelectorAll(selector).forEach(function(c) {
+            c.classList.remove('selected');
+            c.setAttribute('aria-checked', 'false');
+          });
+          card.classList.add('selected');
+          card.setAttribute('aria-checked', 'true');
+          card.querySelector('input[type="radio"]').checked = true;
+          if (onSelect) onSelect(card);
+          validateForm();
+        });
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+        });
+      });
+    }
+
+    function toAbschlussArr(val) {
+      return Array.isArray(val) ? val : (val ? [val] : []);
+    }
+
     function initKacheln() {
-      // Gruppen-Kacheln
-      document.querySelectorAll('.card').forEach(function(card) {
-        card.addEventListener('click', function() {
-          document.querySelectorAll('.card').forEach(function(c) {
-            c.classList.remove('selected');
-            c.setAttribute('aria-checked', 'false');
-          });
-          card.classList.add('selected');
-          card.setAttribute('aria-checked', 'true');
-          card.querySelector('input[type="radio"]').checked = true;
-          validateForm();
-        });
-        card.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-        });
-      });
-
-      // Uni-Kacheln
-      document.querySelectorAll('.uni-card').forEach(function(card) {
-        card.addEventListener('click', function() {
-          document.querySelectorAll('.uni-card').forEach(function(c) {
-            c.classList.remove('selected');
-            c.setAttribute('aria-checked', 'false');
-          });
-          card.classList.add('selected');
-          card.setAttribute('aria-checked', 'true');
-          card.querySelector('input[type="radio"]').checked = true;
-          updateModulLabel(card.dataset.uni);
-          validateForm();
-        });
-        card.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-        });
-      });
-
-      // Studienrichtung-Kacheln (Radio)
-      document.querySelectorAll('.option-card[data-studienrichtung]').forEach(function(card) {
-        card.addEventListener('click', function() {
-          document.querySelectorAll('.option-card[data-studienrichtung]').forEach(function(c) {
-            c.classList.remove('selected');
-            c.setAttribute('aria-checked', 'false');
-          });
-          card.classList.add('selected');
-          card.setAttribute('aria-checked', 'true');
-          card.querySelector('input[type="radio"]').checked = true;
-          validateForm();
-        });
-        card.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-        });
-      });
+      initRadioCards('.card');
+      initRadioCards('.uni-card', function(card) { updateModulLabel(card.dataset.uni); });
+      initRadioCards('.option-card[data-studienrichtung]');
 
       // Abschluss-Kacheln (Studienleistung/Modulpr\u00fcfung exklusiv, Lizenzen unabh\u00e4ngig)
       var exclusiveAbschluss = ['studienleistung', 'modulpruefung'];
@@ -719,7 +694,7 @@
         '<p><span class="conf-label">Studienrichtung:</span> ' + escHtml(data.studienrichtung) + '</p>' +
         '<p><span class="conf-label">Gruppe:</span> ' + escHtml(data.gruppe) + '</p>' +
         '<p><span class="conf-label">Uni:</span> ' + escHtml(data.uni) + '</p>' +
-        '<p><span class="conf-label">Abschluss:</span> ' + escHtml((Array.isArray(data.abschluss) ? data.abschluss : [data.abschluss]).map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ')) + '</p>';
+        '<p><span class="conf-label">Abschluss:</span> ' + escHtml(toAbschlussArr(data.abschluss).map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ')) + '</p>';
     }
 
     function updateModulLabel(uni) {
@@ -767,7 +742,7 @@
     };
 
     function renderAbschlussChips(abschluss) {
-      var arr = Array.isArray(abschluss) ? abschluss : (abschluss ? [abschluss] : []);
+      var arr = toAbschlussArr(abschluss);
       if (!arr.length) return '&mdash;';
       return '<span class="abschluss-chips">' + arr.map(function(a) {
         var cls = ABSCHLUSS_CHIP_CLASS[a] || '';
@@ -818,7 +793,7 @@
       stats.hidden = false;
       var abschlussCount = {};
       records.forEach(function(r) {
-        var arr = Array.isArray(r.abschluss) ? r.abschluss : (r.abschluss ? [r.abschluss] : ['Unbekannt']);
+        var arr = toAbschlussArr(r.abschluss);
         arr.forEach(function(a) {
           var label = ABSCHLUSS_LABELS[a] || a || 'Unbekannt';
           abschlussCount[label] = (abschlussCount[label] || 0) + 1;
@@ -893,7 +868,7 @@
         startY: 34,
         head: [['Nachname', 'Vorname', 'Studienrichtung', 'Gruppe', 'Uni', 'Abschluss']],
         body: records.map(function(r) {
-          var abschlussArr = Array.isArray(r.abschluss) ? r.abschluss : (r.abschluss ? [r.abschluss] : []);
+          var abschlussArr = toAbschlussArr(r.abschluss);
           var abschlussDisplay = abschlussArr.map(function(a) { return ABSCHLUSS_LABELS[a] || a; }).join(', ');
           return [r.nachname || '', r.vorname || '', r.studienrichtung || '', r.gruppe || '', r.uni || '', abschlussDisplay];
         }),
@@ -903,7 +878,7 @@
 
       var abschlussCount = {};
       records.forEach(function(r) {
-        var arr = Array.isArray(r.abschluss) ? r.abschluss : (r.abschluss ? [r.abschluss] : ['Unbekannt']);
+        var arr = toAbschlussArr(r.abschluss);
         arr.forEach(function(a) {
           var label = ABSCHLUSS_LABELS[a] || a || 'Unbekannt';
           abschlussCount[label] = (abschlussCount[label] || 0) + 1;
